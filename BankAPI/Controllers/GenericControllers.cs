@@ -8,13 +8,13 @@ namespace BankAPI.Controllers
     [ApiController]
     public class UserController : GenericBankController<UserEntity>
     {
-        public UserController(IBankRepository<UserEntity> repository) : base(repository) { }
+        public UserController(IUserRepository repository) : base(repository) { }
     }
 
     [Route("[controller]")]
     [ApiController]
     public class AccountController : GenericBankController<AccountEntity>
     {
-        public AccountController(IBankRepository<AccountEntity> repository) : base(repository) { }
+        public AccountController(IAccountRepository repository) : base(repository) { }
     }
 }
