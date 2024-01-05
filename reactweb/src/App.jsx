@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import config from './config';
+import UserServices from './Services/UserServices';
 
 function App() {
     const [users, setUsers] = useState([]);
 
-    const fetchUsers = async () => {
-        const response = await fetch(`${config.baseApiUrl}/user`);
-        console.log("response " + response);
-        const data = await response.json();
-        console.log("data " + data)
-        setUsers(data);
-        console.log("user1: " + data[0]);
-        console.log(data[0]);
-    }
-    fetchUsers();
+    useEffect(() => {
+        UserServices.fetchUsers().then((data) => {
+            setUsers(data);
+        });
+        console.log('reload');
+    }, []);
 
     return (
         <div>
