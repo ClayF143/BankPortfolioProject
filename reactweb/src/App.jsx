@@ -11,14 +11,33 @@ function App() {
         const data = await response.json();
         console.log("data " + data)
         setUsers(data);
-        console.log(users);
+        console.log("user1: " + data[0]);
+        console.log(data[0]);
     }
     fetchUsers();
 
     return (
         <div>
             hoi this is the app
-            { users[0].firstName }
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map(user => (
+                        <tr key={user.id}>
+                            <td>{user.firstName}</td>
+                            <td>{user.lastName}</td>
+                            <td>{user.email}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 }
