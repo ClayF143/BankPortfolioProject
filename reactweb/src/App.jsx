@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import UserServices from './Services/UserServices';
+import Layout from './Shared/Layout';
+import Overview from './Overview';
 
 function App() {
     const [users, setUsers] = useState([]);
@@ -9,13 +11,13 @@ function App() {
         UserServices.fetchUsers().then((data) => {
             setUsers(data);
         });
-        console.log('reload');
     }, []);
 
     return (
         <div>
-            hoi this is the app
-
+            <Layout>
+                <Overview />
+            </Layout>
             <table>
                 <thead>
                     <tr>
