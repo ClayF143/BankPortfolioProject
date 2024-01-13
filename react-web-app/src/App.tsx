@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
+import logo from './logo.svg';
 import './App.css';
-import UserServices from './Services/UserServices';
-import Layout from './Shared/Layout';
-import Overview from './Overview';
+import { useEffect, useState } from 'react';
+import UserServices from './services/UserServices';
+import User from './types/User';
 
 function App() {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         UserServices.fetchUsers().then((data) => {
@@ -15,9 +16,6 @@ function App() {
 
     return (
         <div>
-            <Layout>
-                <Overview />
-            </Layout>
             <table>
                 <thead>
                     <tr>
