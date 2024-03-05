@@ -1,5 +1,6 @@
 ﻿using BankAPI.Entities.Tables;
 using BankAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers
@@ -15,18 +16,23 @@ namespace BankAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public List<TEntity> Get() => Repository.Get().Result;
 
         [HttpGet("{id}")]
+        [Authorize]
         public TEntity? Get(int id) => Repository.Get(id).Result;
 
         [HttpPost]
+        [Authorize]
         public void Post([FromBody] TEntity value) => Repository.Add(value);
 
         [HttpPut("{id}")]
+        [Authorize]
         public void Put(int id, [FromBody] TEntity value) => Repository.Update(value);
 
         [HttpDelete("{id}")]
+        [Authorize]
         public void Delete(int id) => Repository?.Delete(id);
     }
 }
