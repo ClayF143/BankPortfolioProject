@@ -7,7 +7,6 @@ import Profile from './Profile';
 import config from './config';
 
 function App() {
-
     return (
         /*
         <div>

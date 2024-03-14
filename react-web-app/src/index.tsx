@@ -12,6 +12,8 @@ root.render(
     <Auth0Provider
       domain="dev-6vmmxbqy66u4zfxt.us.auth0.com"
       clientId="sjZ207dvP45paJabJuoY5IflUlf3421B"
+      useRefreshTokens={true}
+      cacheLocation='localstorage'
       authorizationParams={{
         redirect_uri: window.location.origin,
         audience: "https://dev-6vmmxbqy66u4zfxt.us.auth0.com/api/v2/",
@@ -22,7 +24,4 @@ root.render(
     </Auth0Provider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
