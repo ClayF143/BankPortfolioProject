@@ -4,18 +4,10 @@ import UserServices from './services/UserServices';
 import User from './types/User';
 import { useAuth0 } from "@auth0/auth0-react";
 import Profile from './Profile';
+import config from './config';
 
 function App() {
-    const [users, setUsers] = useState<User[]>([]);
-    const { loginWithRedirect } = useAuth0();
-    const { logout } = useAuth0();
-    /*
-    useEffect(() => {
-        UserServices.fetchUsers().then((data) => {
-            setUsers(data);
-        });
-    }, []);
-*/
+
     return (
         /*
         <div>
@@ -40,11 +32,6 @@ function App() {
         </div>
         */
        <div>
-            hi
-            <button onClick={() => loginWithRedirect()}>Log In</button>
-            <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
-                Log Out
-            </button>
             <Profile />
        </div>
     )
