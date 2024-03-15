@@ -12,12 +12,9 @@ root.render(
     <Auth0Provider
       domain="dev-6vmmxbqy66u4zfxt.us.auth0.com"
       clientId="sjZ207dvP45paJabJuoY5IflUlf3421B"
-      useRefreshTokens={true}
-      cacheLocation='localstorage'
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: "https://dev-6vmmxbqy66u4zfxt.us.auth0.com/api/v2/",
-        scope: "read:current_user update:current_user_metadata"
+        audience: "https://bank_api.com",
       }}
     >
       <App />

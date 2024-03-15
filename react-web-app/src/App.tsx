@@ -1,39 +1,33 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import UserServices from './services/UserServices';
-import User from './types/User';
 import { useAuth0 } from "@auth0/auth0-react";
 import Profile from './Profile';
 import config from './config';
+import UserList from './UserList';
 
 function App() {
+    const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+
     return (
-        /*
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map(user => (
-                        <tr key={user.id}>
-                            <td>{user.firstName}</td>
-                            <td>{user.lastName}</td>
-                            <td>{user.email}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-        */
        <div>
-            <Profile />
+            <button onClick={() => loginWithRedirect()}>Log In</button>
+            {isAuthenticated && (
+                <>
+                    <UserList
+                        getAccessTokenSilently={getAccessTokenSilently}
+                    />
+                    
+                </>
+            )}
        </div>
     )
+    /*
+    <Profile 
+                        user={user}
+                        getAccessTokenSilently={getAccessTokenSilently}
+                    />
+                    */
 }
 
 export default App;

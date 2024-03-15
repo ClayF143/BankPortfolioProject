@@ -48,7 +48,16 @@ builder.Services.AddSwaggerGen(c =>
         { securitySchema, new[] { "Bearer" } }
     });
 });
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+            builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            });
+});
 builder.Services.AddDbContext<BankDbContext>();
 
 builder.Services.AddServices();
@@ -62,7 +71,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(p => p.WithOrigins(Configuration["baseReactUrl"]).AllowAnyHeader().AllowAnyMethod());
+app.UseRouting();
+
+app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();
 
