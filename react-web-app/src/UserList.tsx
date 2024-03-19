@@ -21,19 +21,23 @@ function UserList({ getAccessTokenSilently }: IUserListProps) {
             },
         });
         
-        const url = `${domain}/User`;
+        const url = `${config.baseApiUrl}/User`;
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
-        });
-        console.log(response.json());
+        }).catch(err => 
+            console.log(err.message)
+        );
+        const res = response != null ? await response.json() : [];
+        console.log(res);
+        setUsers(res)
         
     }
 
     useEffect(() => {
         getData();
-    })
+    }, [])
 
     return (
         <div>
