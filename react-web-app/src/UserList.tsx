@@ -2,9 +2,12 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import UserServices from './services/UserServices';
 import User from './types/User';
-import { GetTokenSilentlyOptions, useAuth0 } from "@auth0/auth0-react";
-import Profile from './Profile';
-import config from './config';
+import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
+import { AgGridReact } from 'ag-grid-react';
+import { ColDef } from 'ag-grid-community';
+
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 interface IUserListProps {
     getAccessTokenSilently: (options?: GetTokenSilentlyOptions | undefined) => Promise<string>;
@@ -12,53 +15,26 @@ interface IUserListProps {
 
 function UserList({ getAccessTokenSilently }: IUserListProps) {
     const [users, setUsers] = useState<User[]>([]);
+
+    const [columnDefs] = useState<ColDef[]>([
+        { headerName: "ID", field: "id" },
+        { headerName: "First Name", field: "firstName" },
+        { headerName: "Last Name", field: "lastName" },
+        { headerName: "Email", field: "email" },
+    ]);
     
     const getData = async () => {
-        const domain = "https://bank_api.com";
-        const accessToken = await getAccessTokenSilently({
-            authorizationParams: {
-                audience: `${domain}`,
-            },
-        });
-        
-        const url = `${config.baseApiUrl}/User`;
-        const response = await fetch(url, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        }).catch(err => 
-            console.log(err.message)
-        );
-        const res = response != null ? await response.json() : [];
-        console.log(res);
-        setUsers(res)
-        
-    }
-
-    useEffect(() => {
-        getData();
-    }, [])
+        const res = await UserServices.fetchUsers({ getAccessTokenSilently });
+        setUsers(res);
+    };
 
     return (
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map(user => (
-                        <tr key={user.id}>
-                            <td>{user.firstName}</td>
-                            <td>{user.lastName}</td>
-                            <td>{user.email}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="ag-theme-alpine" style={{ height: 400, width: '90%' }}>
+            <AgGridReact
+                columnDefs={columnDefs}
+                rowData={users}
+                onGridReady={getData}>
+            </AgGridReact>
         </div>
     )
 }

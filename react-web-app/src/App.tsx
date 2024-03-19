@@ -1,33 +1,32 @@
 import './App.css';
-import { useEffect, useState } from 'react';
-import UserServices from './services/UserServices';
 import { useAuth0 } from "@auth0/auth0-react";
 import Profile from './Profile';
-import config from './config';
 import UserList from './UserList';
+import { useState } from 'react';
+import Dashboard from './pages/Dashboard';
 
 function App() {
-    const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+    const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect, getAccessTokenWithPopup } = useAuth0();
 
+    const [showProfile, setShowProfile] = useState(false);
     return (
        <div>
             <button onClick={() => loginWithRedirect()}>Log In</button>
+            <button onClick={() => setShowProfile(!showProfile)}>Show Profile</button>
             {isAuthenticated && (
-                <>
-                    <UserList
-                        getAccessTokenSilently={getAccessTokenSilently}
-                    />
-                    
-                </>
+                <UserList
+                    getAccessTokenSilently={ getAccessTokenSilently }
+                />
             )}
+            {showProfile && (
+                <Profile 
+                    user={user}
+                    getAccessTokenWithPopup={ getAccessTokenWithPopup }
+                />
+            )}
+            <Dashboard />
        </div>
     )
-    /*
-    <Profile 
-                        user={user}
-                        getAccessTokenSilently={getAccessTokenSilently}
-                    />
-                    */
 }
 
 export default App;

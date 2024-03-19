@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { GetTokenSilentlyOptions, User, useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
+import { GetTokenWithPopupOptions, PopupConfigOptions, User } from "@auth0/auth0-react";
 
 interface IProfileProps {
   user: User | undefined;
-  getAccessTokenSilently: (options?: GetTokenSilentlyOptions | undefined) => Promise<string>;
+  getAccessTokenWithPopup: (options?: GetTokenWithPopupOptions | undefined, config?: PopupConfigOptions | undefined) => Promise<string | undefined>;
 }
 
-const Profile = ({ user, getAccessTokenSilently }: IProfileProps) => {
+function Profile ({ user, getAccessTokenWithPopup }: IProfileProps) {
   const [userMetadata, setUserMetadata] = useState(null);
 
   useEffect(() => {
     const getUserMetadata = async () => {
       const domain = "dev-6vmmxbqy66u4zfxt.us.auth0.com";
       
-      const accessToken = await getAccessTokenSilently({
+      const accessToken = await getAccessTokenWithPopup({
         authorizationParams: {
           audience: "https://dev-6vmmxbqy66u4zfxt.us.auth0.com/api/v2/",
           scope: "read:current_user update:current_user_metadata"
@@ -32,7 +32,7 @@ const Profile = ({ user, getAccessTokenSilently }: IProfileProps) => {
     };
   
     getUserMetadata();
-  }, [getAccessTokenSilently, user?.sub]);
+  }, [getAccessTokenWithPopup, user?.sub]);
 
   return (
     <div>
