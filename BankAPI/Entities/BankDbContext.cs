@@ -6,17 +6,11 @@ namespace BankAPI.Entities
     public class BankDbContext: DbContext
     {
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<AccountEntity> Accounts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            optionsBuilder.UseSqlite($"Data Source={Path.Join(path, "bank.db")}");
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            SeedData.Seed(modelBuilder);
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=bankdb;Trusted_Connection=True;");
         }
     }
 }

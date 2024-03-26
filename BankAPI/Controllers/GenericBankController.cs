@@ -17,7 +17,7 @@ namespace BankAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public List<TEntity> Get() => Repository.Get().Result;
+        public List<TEntity> GetAll() => Repository.GetAll().Result;
 
         [HttpGet("{id}")]
         [Authorize]
@@ -25,11 +25,11 @@ namespace BankAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public void Post([FromBody] TEntity value) => Repository.Add(value);
+        public void Add([FromBody] TEntity value) => Repository.Add(value);
 
         [HttpPut("{id}")]
         [Authorize]
-        public void Put(int id, [FromBody] TEntity value) => Repository.Update(value);
+        public void Update(int id, [FromBody] TEntity value) => Repository.Update(value);
 
         [HttpDelete("{id}")]
         [Authorize]

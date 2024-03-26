@@ -5,7 +5,7 @@ namespace BankAPI.Repository
     public interface IBankRepository<TEntity>
         where TEntity : class
     {
-        Task<List<TEntity>> Get();
+        Task<List<TEntity>> GetAll();
         Task<TEntity?> Get(int id);
         void Add(TEntity entity);
         void Update(TEntity entity);
@@ -24,7 +24,7 @@ namespace BankAPI.Repository
             this.context = context;
         }
 
-        public async Task<List<TEntity>> Get() =>
+        public async Task<List<TEntity>> GetAll() =>
             await Table.ToListAsync();
 
         public async Task<TEntity?> Get(int id) =>

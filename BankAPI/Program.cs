@@ -1,6 +1,7 @@
 using BankAPI.Entities;
 using BankAPI.Utility.Service_Registration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var Configuration = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory)
@@ -15,8 +16,8 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
-    options.Authority = "https://dev-6vmmxbqy66u4zfxt.us.auth0.com/";
-    options.Audience = "https://bank_api.com";
+    options.Authority = Configuration["Auth0:Authority"];
+    options.Audience = Configuration["Auth0:Audience"];
 });
 
 // Add services to the container.
