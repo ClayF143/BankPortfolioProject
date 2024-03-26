@@ -36,7 +36,7 @@ function UserList({ getAccessTokenSilently }: IUserListProps) {
                 onGridReady={getData}>
             </AgGridReact>
         </div>
-    )
+    );
 }
 
 export default UserList;

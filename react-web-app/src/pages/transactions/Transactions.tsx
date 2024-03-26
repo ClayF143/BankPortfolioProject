@@ -36,7 +36,7 @@ function Transaction() {
           className={
             "ag-theme-quartz"
           }
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: '80%', height: 400 }}
         >
           <AgGridReact rowData={[]} columnDefs={colDefs} />
           {rowData[0].make}
