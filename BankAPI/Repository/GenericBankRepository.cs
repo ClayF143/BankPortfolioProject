@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BankAPI.Repository
 {
     public interface IBankRepository<TEntity>
         where TEntity : class
     {
-        Task<List<TEntity>> GetAll();
+        Task<List<TEntity>> GetAll(params string[] includes);
         Task<TEntity?> Get(int id);
+        Task<List<TEntity>> Get(Expression<Func<TEntity, bool>> predicate, params string[] includes);
         Task Add(TEntity entity);
         Task Update(TEntity entity);
         Task Delete(int id);
@@ -24,11 +26,28 @@ namespace BankAPI.Repository
             this.context = context;
         }
 
-        public async Task<List<TEntity>> GetAll() =>
-            await Table.ToListAsync();
+        public async Task<List<TEntity>> GetAll(params string[] includes)
+        {
+            var query = Table.AsQueryable();
+            foreach(var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.ToListAsync();
+        }
 
         public async Task<TEntity?> Get(int id) =>
             await Table.FindAsync(id);
+
+        public async Task<List<TEntity>> Get(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+        {
+            var query = Table.AsQueryable();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.Where(predicate).ToListAsync();
+        }
 
         public async Task Add(TEntity entity)
         {
