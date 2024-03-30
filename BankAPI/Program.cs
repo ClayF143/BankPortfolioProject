@@ -60,7 +60,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddDbContext<BankDbContext>();
+builder.Services.AddDbContext<BankDbContext>(options =>
+    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddServices();
 

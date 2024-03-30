@@ -5,12 +5,9 @@ namespace BankAPI.Entities
 {
     public class BankDbContext: DbContext
     {
-        public DbSet<UserEntity> Users { get; set; }
-        public DbSet<AccountEntity> Accounts { get; set; }
+        public BankDbContext(DbContextOptions<BankDbContext> context) : base(context) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=bankdb;Trusted_Connection=True;");
-        }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Account> Accounts { get; set; }
     }
 }

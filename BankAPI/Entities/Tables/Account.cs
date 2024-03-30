@@ -1,6 +1,6 @@
 ﻿namespace BankAPI.Entities.Tables
 {
-    public class AccountEntity
+    public class Account
     {
         public int Id { get; set; }
         public int UserId { get; set; }

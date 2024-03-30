@@ -7,9 +7,9 @@ namespace BankAPI.Repository
     {
         Task<List<TEntity>> GetAll();
         Task<TEntity?> Get(int id);
-        void Add(TEntity entity);
-        void Update(TEntity entity);
-        void Delete(int id);
+        Task Add(TEntity entity);
+        Task Update(TEntity entity);
+        Task Delete(int id);
     }
 
     public abstract class GenericBankRepository<TEntity, TContext> : IBankRepository<TEntity>
@@ -30,38 +30,26 @@ namespace BankAPI.Repository
         public async Task<TEntity?> Get(int id) =>
             await Table.FindAsync(id);
 
-        public async void Add(TEntity entity)
+        public async Task Add(TEntity entity)
         {
-            try
-            {
-                Table.Add(entity);
-                await context.SaveChangesAsync();
-            }
-            catch { throw; }
+            Table.Add(entity);
+            await context.SaveChangesAsync();
         }
 
-        public async void Update(TEntity entity)
+        public async Task Update(TEntity entity)
         {
-            try
-            {
-                context.Update(entity);
-                await context.SaveChangesAsync();
-            }
-            catch { throw; }
+            context.Update(entity);
+            await context.SaveChangesAsync();
         }
 
-        public async void Delete(int id)
+        public async Task Delete(int id)
         {
-            try
+            var entity = await Get(id);
+            if (entity != null)
             {
-                var entity = await Get(id);
-                if (entity != null)
-                {
-                    Table.Remove(entity);
-                    await context.SaveChangesAsync();
-                }
+                Table.Remove(entity);
+                await context.SaveChangesAsync();
             }
-            catch { throw; }
         }
     }
 }

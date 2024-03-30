@@ -2,14 +2,13 @@
 using BankAPI.Entities.Tables;
 using BankAPI.Models;
 using BankAPI.Repository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class UserController : GenericBankController<UserEntity>
+    public class UserController : GenericBankController<User>
     {
         public IAuth0BusinessLogic auth0BusinessLogic { get; set; }
 
@@ -19,10 +18,9 @@ namespace BankAPI.Controllers
         }
 
         [HttpPut]
-        [Authorize]
-        public void SyncUserFromAuth0([FromBody] Auth0UserModel userData)
+        public async Task SyncUserFromAuth0([FromBody] Auth0UserModel userData)
         {
-            auth0BusinessLogic.SyncUserFromAuth0(userData);
+            await auth0BusinessLogic.SyncUserFromAuth0(userData);
         }
     }
 }

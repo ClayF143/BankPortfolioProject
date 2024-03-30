@@ -10,7 +10,7 @@ interface IServiceProp {
 const UserServices = {
     fetchUsers: async ({ getAccessTokenSilently }: IServiceProp) : Promise<User[]> => {
         const accessToken = await ServiceUtils.getAccessToken({ getAccessTokenSilently });
-        const response = await fetch(`${config.baseApiUrl}/user`, {
+        const response = await fetch(`${config.baseApiUrl}/user/getall`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }

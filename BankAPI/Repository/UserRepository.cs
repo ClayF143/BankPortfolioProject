@@ -4,10 +4,10 @@ using BankAPI.Utility;
 
 namespace BankAPI.Repository
 {
-    public interface IUserRepository : IBankRepository<UserEntity> { }
+    public interface IUserRepository : IBankRepository<User> { }
 
     [Service(typeof(IUserRepository))]
-    public class UserRepository : GenericBankRepository<UserEntity, BankDbContext>, IUserRepository
+    public class UserRepository : GenericBankRepository<User, BankDbContext>, IUserRepository
     {
         public UserRepository(BankDbContext context) : base(context) { }
     }

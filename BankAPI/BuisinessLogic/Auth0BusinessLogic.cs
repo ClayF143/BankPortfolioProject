@@ -22,15 +22,34 @@ namespace BankAPI.BuisinessLogic
 
         public async Task SyncUserFromAuth0(Auth0UserModel userData)
         {
-            var existingUser = (await _userRepository.GetAll())
+            List<User> users = await _userRepository.GetAll();
+            var existingUser = users
                 .FirstOrDefault(u => u.Auth0Id == userData.UserId);
+
             if (existingUser == null)
             {
-                // map new user
+                // add new user
+                var newUser = new User
+                {
+                    Auth0Id = userData.UserId,
+                    Email = userData.Email,
+                    FirstName = userData.FirstName,
+                    LastName = userData.LastName,
+                    FullName = userData.Name,
+                };
+
+                await _userRepository.Add(newUser);
             }
             else
             {
                 // update old user
+                existingUser.Auth0Id = userData.UserId;
+                existingUser.Email = userData.Email;
+                existingUser.FirstName = userData.FirstName;
+                existingUser.LastName = userData.LastName;
+                existingUser.FullName = userData.Name;
+
+                await _userRepository.Update(existingUser);
             }
         }
     }

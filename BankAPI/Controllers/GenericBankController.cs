@@ -1,5 +1,4 @@
-﻿using BankAPI.Entities.Tables;
-using BankAPI.Repository;
+﻿using BankAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,22 +16,22 @@ namespace BankAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public List<TEntity> GetAll() => Repository.GetAll().Result;
+        public async Task<List<TEntity>> GetAll() => await Repository.GetAll();
 
         [HttpGet("{id}")]
         [Authorize]
-        public TEntity? Get(int id) => Repository.Get(id).Result;
+        public async Task<TEntity?> Get(int id) => await Repository.Get(id);
 
         [HttpPost]
         [Authorize]
-        public void Add([FromBody] TEntity value) => Repository.Add(value);
+        public async Task Add([FromBody] TEntity value) => await Repository.Add(value);
 
         [HttpPut("{id}")]
         [Authorize]
-        public void Update(int id, [FromBody] TEntity value) => Repository.Update(value);
+        public async Task Update(int id, [FromBody] TEntity value) => await Repository.Update(value);
 
         [HttpDelete("{id}")]
         [Authorize]
-        public void Delete(int id) => Repository?.Delete(id);
+        public async Task Delete(int id) => await Repository.Delete(id);
     }
 }
