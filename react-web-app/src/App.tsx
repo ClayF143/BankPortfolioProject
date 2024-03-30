@@ -5,8 +5,8 @@ import UserList from './UserList';
 import { createElement, useState } from 'react';
 import Dashboard from './pages/Dashboard';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, MenuProps } from 'antd';
+import Login from './misc-components/Login';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -35,10 +35,10 @@ const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
     },
   );
 
-function App() {
-    const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect, getAccessTokenWithPopup } = useAuth0();
+  
 
-    const [showProfile, setShowProfile] = useState(false);
+function App() {
+    const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect, logout, getAccessTokenWithPopup } = useAuth0();
 
     const {
       token: { colorBgContainer, borderRadiusLG },
@@ -47,13 +47,17 @@ function App() {
     return (
       <Layout>
         <Header style={{ display: 'flex', alignItems: 'center' }}>
-          <div className="demo-logo" />
           <Menu
             theme="dark"
             mode="horizontal"
             defaultSelectedKeys={['2']}
             items={items1}
             style={{ flex: 1, minWidth: 0 }}
+          />
+          <Login 
+            user={user}
+            loginWithRedirect={loginWithRedirect}
+            logout={logout}
           />
         </Header>
         <Content style={{ padding: '0 48px' }}>
@@ -70,17 +74,9 @@ function App() {
               />
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 400 }}>
-              <button onClick={() => loginWithRedirect()}>Log In</button>
-              <button onClick={() => setShowProfile(!showProfile)}>Show Profile</button>
               {isAuthenticated && (
                 <UserList
                   getAccessTokenSilently={ getAccessTokenSilently }
-                />
-              )}
-              {showProfile && (
-                <Profile 
-                  user={user}
-                  getAccessTokenWithPopup={ getAccessTokenWithPopup }
                 />
               )}
               <Dashboard />
@@ -89,6 +85,7 @@ function App() {
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           Ant Design ©{new Date().getFullYear()} Created by Ant UED
+
         </Footer>
       </Layout>
     );
