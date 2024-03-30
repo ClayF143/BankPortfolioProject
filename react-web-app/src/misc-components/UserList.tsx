@@ -1,7 +1,6 @@
-import './App.css';
 import { useEffect, useState } from 'react';
-import UserServices from './services/UserServices';
-import User from './types/User';
+import UserServices from '../services/UserServices';
+import User from '../types/User';
 import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';

@@ -14,11 +14,11 @@ function Login({ user, loginWithRedirect, logout }: ILoginProps) {
 
   useEffect(() => {
     setIsLoggedIn(user ? true : false);
-  }, [user])
+  }, [user]);
   
   const handleProfileClick = () => {
     isLoggedIn ? logout() : loginWithRedirect();
-  }
+  };
 
   return (
     <Tooltip placement="bottom" title={isLoggedIn ? "Logout" : "Login"} color="blue">
@@ -30,7 +30,7 @@ function Login({ user, loginWithRedirect, logout }: ILoginProps) {
         {isLoggedIn ? <></> : <UserOutlined />}
       </Avatar>
     </Tooltip>
-  )
+  );
 }
 
 export default Login;
