@@ -24,14 +24,13 @@ namespace BankAPI.BuisinessLogic
         {
             List<User> users = await _userRepository.GetAll();
             var existingUser = users
-                .FirstOrDefault(u => u.Auth0Id == userData.UserId);
+                .FirstOrDefault(u => u.Email == userData.Email);
 
             if (existingUser == null)
             {
                 // add new user
                 var newUser = new User
                 {
-                    Auth0Id = userData.UserId,
                     Email = userData.Email,
                     FirstName = userData.FirstName,
                     LastName = userData.LastName,
@@ -43,7 +42,6 @@ namespace BankAPI.BuisinessLogic
             else
             {
                 // update old user
-                existingUser.Auth0Id = userData.UserId;
                 existingUser.Email = userData.Email;
                 existingUser.FirstName = userData.FirstName;
                 existingUser.LastName = userData.LastName;
