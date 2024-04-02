@@ -4,44 +4,22 @@ import { AppState, LogoutOptions, RedirectLoginOptions, User as AuthUser, GetTok
 import { useEffect, useState } from "react";
 import User from "../types/User"
 import UserServices from "../services/UserServices";
+import { useAuth } from "../MyAuthProvider";
 
-interface ILoginProps {
-  authUser: AuthUser | undefined;
-  loginWithRedirect: (options?: RedirectLoginOptions<AppState> | undefined) => Promise<void>;
-  logout: (options?: LogoutOptions | undefined) => Promise<void>;
-  setUser: (user: User | null) => void;
-  getAccessTokenSilently: (options?: GetTokenSilentlyOptions | undefined) => Promise<string>;
-}
-
-function Login({ authUser, loginWithRedirect, logout, setUser, getAccessTokenSilently }: ILoginProps) {
-  const [isLoggedIn, setIsLoggedIn] = useState(authUser ? true : false);
-
-  const getCurrentUser = async () => {
-    const currUser = await UserServices.fetchCurrentUser({ getAccessTokenSilently });
-    setUser(currUser);
-  };
-
-  useEffect(() => {
-    setIsLoggedIn(authUser != null);
-  }, [authUser]);
-
-  useEffect(() => {
-    if(isLoggedIn)
-      getCurrentUser();
-  }, [isLoggedIn])
-  
+function Login() {
+  const { isAuthenticated, authUser, loginWithRedirect, logout } = useAuth();
   const handleProfileClick = () => {
-    isLoggedIn ? logout() : loginWithRedirect();
+    isAuthenticated ? logout() : loginWithRedirect();
   };
 
   return (
-    <Tooltip placement="bottom" title={isLoggedIn ? authUser?.email : "Login"} color="blue">
+    <Tooltip placement="bottom" title={isAuthenticated ? "Logout" : "Login"} color="blue">
       <Avatar
         className="avatar-hover-effect"
         src={authUser?.picture}
         onClick={handleProfileClick}
       >
-        {isLoggedIn ? <></> : <UserOutlined />}
+        {isAuthenticated ? <></> : <UserOutlined />}
       </Avatar>
     </Tooltip>
   );

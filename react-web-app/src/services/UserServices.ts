@@ -1,15 +1,8 @@
-import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
 import config from "../config";
-import ServiceUtils from "./ServiceUtils";
 import User from "../types/User";
 
-interface IServiceProp {
-    getAccessTokenSilently: (options?: GetTokenSilentlyOptions | undefined) => Promise<string>;
-}
-
 const UserServices = {
-    fetchUsers: async ({ getAccessTokenSilently }: IServiceProp) : Promise<User[]> => {
-        const accessToken = await ServiceUtils.getAccessToken({ getAccessTokenSilently });
+    fetchUsers: async (accessToken: string) => {
         const response = await fetch(`${config.baseApiUrl}/user/getall`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -18,8 +11,7 @@ const UserServices = {
         return await response.json();
     },
     
-    fetchCurrentUser: async ({ getAccessTokenSilently }: IServiceProp) : Promise<User> => {
-        const accessToken = await ServiceUtils.getAccessToken({ getAccessTokenSilently });
+    fetchCurrentUser: async (accessToken: string) : Promise<User> => {
         const response = await fetch(`${config.baseApiUrl}/user/getcurrentuser`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`

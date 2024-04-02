@@ -4,6 +4,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
 import config from './config';
+import { MyAuthProvider } from './MyAuthProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -19,7 +20,9 @@ root.render(
         scope: "openid profile email"
       }}
     >
-      <App />
+      <MyAuthProvider>
+        <App />
+      </MyAuthProvider>
     </Auth0Provider>
 );
 

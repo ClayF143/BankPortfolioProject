@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react';
 import UserServices from '../services/UserServices';
 import User from '../types/User';
-import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { useAuth } from '../MyAuthProvider';
 
-interface IUserListProps {
-    getAccessTokenSilently: (options?: GetTokenSilentlyOptions | undefined) => Promise<string>;
-}
-
-function UserList({ getAccessTokenSilently }: IUserListProps) {
+function UserList() {
     const [users, setUsers] = useState<User[]>([]);
 
     const [columnDefs] = useState<ColDef[]>([
@@ -23,7 +19,8 @@ function UserList({ getAccessTokenSilently }: IUserListProps) {
     ]);
     
     const getData = async () => {
-        const res = await UserServices.fetchUsers({ getAccessTokenSilently });
+        const { accessToken } = useAuth();
+        const res = await UserServices.fetchUsers(accessToken);
         setUsers(res);
     };
 

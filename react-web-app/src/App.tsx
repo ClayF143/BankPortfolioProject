@@ -7,6 +7,7 @@ import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/
 import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from './misc-components/Login';
 import User from './types/User';
+import AddTransaction from './pages/transactions/AddTransaction';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -34,19 +35,21 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
 });
 
 function App() {
-  const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect, logout } = useAuth0();
   const [content, setContent] = useState(<></>);
-  const [myUser, setMyUser] = useState<User | null>(null);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   const handleMenuSelection: MenuProps['onClick'] = (e) => {
-    alert(e.key);
     switch(e.key) {
       case "1":
         setContent(<div>hoi</div>);
+        break;
+      case "2":
+        setContent(
+          <AddTransaction />
+        )
         break;
       default:
         setContent(<Dashboard/>);
@@ -63,13 +66,7 @@ function App() {
           items={items1}
           style={{ flex: 1, minWidth: 0 }}
         />
-        <Login 
-          authUser={user}
-          loginWithRedirect={loginWithRedirect}
-          logout={logout}
-          setUser={setMyUser}
-          getAccessTokenSilently={getAccessTokenSilently}
-        />
+        <Login />
       </Header>
       <Layout
         style={{ padding: '0 0 24px', background: colorBgContainer, borderRadius: borderRadiusLG }}
@@ -86,12 +83,6 @@ function App() {
         </Sider>
         <Content style={{ padding: '24px 24px', minHeight: 400 }}>
           {content}
-          <div>
-            myuser email {myUser?.email}
-          </div>
-          <div>
-            user email {user?.email}
-          </div>
           {/*isAuthenticated && (
             <UserList
               getAccessTokenSilently={ getAccessTokenSilently }

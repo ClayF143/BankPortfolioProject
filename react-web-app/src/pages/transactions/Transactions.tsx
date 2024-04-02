@@ -5,6 +5,7 @@ import { ColDef } from 'ag-grid-community';
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
+import UserList from "../../misc-components/UserList";
 
 interface IRow {
     make: string;
@@ -38,6 +39,8 @@ function Transaction() {
           }
           style={{ width: '80%', height: 400 }}
         >
+          <UserList />
+
           <AgGridReact rowData={[]} columnDefs={colDefs} />
           {rowData[0].make}
         </div>
