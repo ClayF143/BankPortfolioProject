@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import UserServices from '../services/UserServices';
+import UserServices from '../services/UserService';
 import User from '../types/User';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';
@@ -10,6 +10,7 @@ import { useAuth } from '../MyAuthProvider';
 
 function UserList() {
     const [users, setUsers] = useState<User[]>([]);
+    const { accessToken, isAuthenticated } = useAuth();
 
     const [columnDefs] = useState<ColDef[]>([
         { headerName: "ID", field: "id" },
@@ -19,13 +20,12 @@ function UserList() {
     ]);
     
     const getData = async () => {
-        const { accessToken } = useAuth();
-        const res = await UserServices.fetchUsers(accessToken);
+        const res = isAuthenticated ? await new UserServices().fetchAll(accessToken) : [];
         setUsers(res);
     };
 
     return (
-        <div className="ag-theme-alpine" style={{ height: 400, width: '90%' }}>
+        <div className="ag-theme-alpine" style={{ height: 400, width: columnDefs.length * 200 }}>
             <AgGridReact
                 columnDefs={columnDefs}
                 rowData={users}

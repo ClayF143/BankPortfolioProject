@@ -1,13 +1,10 @@
 import './App.css';
-import { useAuth0 } from "@auth0/auth0-react";
-import UserList from './misc-components/UserList';
 import { createElement, useState } from 'react';
 import Dashboard from './pages/Dashboard';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from './misc-components/Login';
-import User from './types/User';
-import AddTransaction from './pages/transactions/AddTransaction';
+import Transactions from './pages/transactions/Transactions';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -48,7 +45,7 @@ function App() {
         break;
       case "2":
         setContent(
-          <AddTransaction />
+          <Transactions />
         )
         break;
       default:

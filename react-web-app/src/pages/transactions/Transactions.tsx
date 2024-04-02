@@ -1,50 +1,53 @@
-import { useState } from "react";
-import AddTransaction from "./AddTransaction";
-import { AgGridReact } from 'ag-grid-react';
-import { ColDef } from 'ag-grid-community';
-
+import { useEffect, useState } from "react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import UserList from "../../misc-components/UserList";
+import AddTransactionPopup from "./AddTransactionPopup";
+import { Button } from "antd";
+import Account from "../../types/Account";
+import { useAuth } from "../../MyAuthProvider";
 
-interface IRow {
-    make: string;
-    model: string;
-    price: number;
-    electric: boolean;
-}
+function Transactions() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-function Transaction() {
-    const [rowData, setRowData] = useState<IRow[]>([
-        { make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
-        { make: 'Ford', model: 'F-Series', price: 33850, electric: false },
-        { make: 'Toyota', model: 'Corolla', price: 29600, electric: false },
-        { make: 'Mercedes', model: 'EQA', price: 48890, electric: true },
-        { make: 'Fiat', model: '500', price: 15774, electric: false },
-        { make: 'Nissan', model: 'Juke', price: 20675, electric: false },
-      ]);
-    
-      // Column Definitions: Defines & controls grid columns.
-      const [colDefs, setColDefs] = useState<ColDef<IRow>[]>([
-        { field: 'make' },
-        { field: 'model' },
-        { field: 'price' },
-        { field: 'electric' },
-      ]);
+  const [currAccount, setCurrAccount] = useState<Account | null>(null);
+  const [accountOptions, setAccountOptions] = useState<Account[]>([]);
 
-    return (
-        <div
-          className={
-            "ag-theme-quartz"
-          }
-          style={{ width: '80%', height: 400 }}
-        >
-          <UserList />
+  const { accessToken, isAuthenticated, myUser} = useAuth();
 
-          <AgGridReact rowData={[]} columnDefs={colDefs} />
-          {rowData[0].make}
+  useEffect(() => {
+    if(isAuthenticated) {
+      //get account options
+      //set account options
+      if(accountOptions.length == 1) {
+        setCurrAccount(accountOptions[0]);
+      }
+    } else {
+      setCurrAccount(null);
+      setAccountOptions([]);
+    }
+
+  }, [isAuthenticated]);
+
+  return (
+      <div>
+        <div>
+          {accountOptions.length > 1 && (
+            <>
+            </>
+          )}
         </div>
-      );
+
+        <UserList />
+        <div>
+          ------------------
+        </div>
+        <Button type="primary" onClick={() => setIsModalOpen(true)}>
+          Open Modal
+        </Button>
+        <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      </div>
+    );
 }
 
-export default Transaction;
+export default Transactions;

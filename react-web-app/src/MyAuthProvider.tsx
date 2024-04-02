@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth0, User as AuthUser, RedirectLoginOptions, AppState, LogoutOptions } from '@auth0/auth0-react';
 import User from './types/User';
-import UserServices from './services/UserServices';
+import UserServices from './services/UserService';
 import config from './config';
 
 interface AuthContextType {
@@ -46,7 +46,7 @@ const MyAuthProvider = ({ children }: AuthProviderProps) => {
         })) ?? "";
         setAccessToken(token);
 
-        const currUser = await UserServices.fetchCurrentUser(token);
+        const currUser = await new UserServices().fetchCurrentUser(token);
         setMyUser(currUser);
       }
     };

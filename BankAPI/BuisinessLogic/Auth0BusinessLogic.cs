@@ -14,10 +14,12 @@ namespace BankAPI.BuisinessLogic
     public class Auth0BusinessLogic: IAuth0BusinessLogic
     {
         private IUserRepository _userRepository;
+        private IUserBL _userBL;
 
-        public Auth0BusinessLogic(IUserRepository userRepo)
+        public Auth0BusinessLogic(IUserRepository userRepo, IUserBL userBL)
         {
             _userRepository = userRepo;
+            _userBL = userBL;
         }
 
         public async Task SyncUserFromAuth0(Auth0UserModel userData)
@@ -37,7 +39,7 @@ namespace BankAPI.BuisinessLogic
                     FullName = userData.Name,
                 };
 
-                await _userRepository.Add(newUser);
+                await _userBL.Add(newUser);
             }
             else
             {

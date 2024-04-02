@@ -9,8 +9,8 @@ namespace BankAPI.Repository
         Task<List<TEntity>> GetAll(params string[] includes);
         Task<TEntity?> Get(int id);
         Task<List<TEntity>> Get(Expression<Func<TEntity, bool>> predicate, params string[] includes);
-        Task Add(TEntity entity);
-        Task Update(TEntity entity);
+        Task<TEntity> Add(TEntity entity);
+        Task<TEntity> Update(TEntity entity);
         Task Delete(int id);
     }
 
@@ -49,16 +49,18 @@ namespace BankAPI.Repository
             return await query.Where(predicate).ToListAsync();
         }
 
-        public async Task Add(TEntity entity)
+        public async Task<TEntity> Add(TEntity entity)
         {
             Table.Add(entity);
             await context.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task Update(TEntity entity)
+        public async Task<TEntity> Update(TEntity entity)
         {
             context.Update(entity);
             await context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task Delete(int id)
