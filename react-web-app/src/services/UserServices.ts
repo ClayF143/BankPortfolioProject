@@ -16,6 +16,17 @@ const UserServices = {
             }
         });
         return await response.json();
+    },
+    
+    fetchCurrentUser: async ({ getAccessTokenSilently }: IServiceProp) : Promise<User> => {
+        const accessToken = await ServiceUtils.getAccessToken({ getAccessTokenSilently });
+        const response = await fetch(`${config.baseApiUrl}/user/getcurrentuser`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        console.log(`${config.baseApiUrl}/user/getcurrentuser`);
+        return await response.json();
     }
 };
 

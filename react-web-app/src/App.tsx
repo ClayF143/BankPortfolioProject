@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from './misc-components/Login';
+import User from './types/User';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -35,6 +36,7 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
 function App() {
   const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect, logout } = useAuth0();
   const [content, setContent] = useState(<></>);
+  const [myUser, setMyUser] = useState<User | null>(null);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -62,9 +64,11 @@ function App() {
           style={{ flex: 1, minWidth: 0 }}
         />
         <Login 
-          user={user}
+          authUser={user}
           loginWithRedirect={loginWithRedirect}
           logout={logout}
+          setUser={setMyUser}
+          getAccessTokenSilently={getAccessTokenSilently}
         />
       </Header>
       <Layout
@@ -82,6 +86,12 @@ function App() {
         </Sider>
         <Content style={{ padding: '24px 24px', minHeight: 400 }}>
           {content}
+          <div>
+            myuser email {myUser?.email}
+          </div>
+          <div>
+            user email {user?.email}
+          </div>
           {/*isAuthenticated && (
             <UserList
               getAccessTokenSilently={ getAccessTokenSilently }

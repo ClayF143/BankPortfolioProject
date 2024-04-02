@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers
 {
+    [Authorize]
     public class UserController : GenericBankController<User>
     {
         public IAuth0BusinessLogic auth0BusinessLogic { get; set; }
@@ -21,6 +22,17 @@ namespace BankAPI.Controllers
         {
             var res = await Repository.Get(a => a.Id == id, nameof(Entities.Tables.User.Accounts));
             return res.FirstOrDefault();
+        }
+
+        [HttpGet()]
+        public async Task<User?> GetCurrentUser()
+        {
+            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == "bankapi/email");
+            if (emailClaim == null)
+                return null;
+            var email = emailClaim.Value ?? "";
+            var users = await Repository.GetAll();
+            return users.FirstOrDefault(u => u.Email == email);
         }
 
         [HttpPut]
