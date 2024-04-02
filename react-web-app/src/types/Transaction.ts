@@ -1,8 +1,10 @@
 type Transaction = {
   id: number,
-  firstName: string,
-  lastName: string,
-  email: string
+  accountId: number,
+  amount: number,
+  transactionDate: Date,
+  counterpartyName: string,
+  counterpartyAccountId: number | null
 }
 
 export default Transaction;
