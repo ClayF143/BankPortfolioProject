@@ -8,7 +8,7 @@ class UserService extends GenericService<User> {
     }
 
     async fetchCurrentUser(accessToken: string): Promise<User> {
-        const response = await axios.get(`${this.baseControllerUrl}/get`, {
+        const response = await axios.get(`${this.baseControllerUrl}/getcurrentuser`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }

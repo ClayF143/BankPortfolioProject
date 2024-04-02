@@ -6,10 +6,10 @@ namespace BankAPI.BuisinessLogic
 {
     public interface IUserBL
     {
-        Task AddUser(User user);
+        Task Add(User user);
     }
 
-    [Service(typeof(IAuth0BusinessLogic))]
+    [Service(typeof(IUserBL))]
     public class UserBL: IUserBL
     {
         private IUserRepository _userRepository;
@@ -21,7 +21,7 @@ namespace BankAPI.BuisinessLogic
             _accountRepository = accountRepo;
         }
 
-        public async Task AddUser(User user)
+        public async Task Add(User user)
         {
             user = await _userRepository.Add(user);
             var account = new Account

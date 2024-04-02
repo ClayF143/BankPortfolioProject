@@ -36,6 +36,7 @@ namespace BankAPI.Controllers
         }
 
         [HttpPut]
+        [AllowAnonymous]
         public async Task SyncUserFromAuth0([FromBody] Auth0UserModel userData)
         {
             await auth0BusinessLogic.SyncUserFromAuth0(userData);

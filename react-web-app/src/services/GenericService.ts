@@ -14,11 +14,12 @@ class GenericService<T> {
         Authorization: `Bearer ${accessToken}`
       }
     });
+    console.log(response);
     return response.data;
   }
 
-  async fetch(accessToken: string): Promise<T> {
-    const response = await axios.get(`${this.baseControllerUrl}/get`, {
+  async fetch(accessToken: string, id: number): Promise<T> {
+    const response = await axios.get(`${this.baseControllerUrl}/get/${id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
