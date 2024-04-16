@@ -27,15 +27,21 @@ function Transactions() {
       console.log('boo');
       setCurrAccount(data[0]);
     }
-    console.log(currAccount?.id);
+    console.log(currAccount?.AccountNumber);
   }
 
   const getTransactionData = async () => {
-    if(currAccount?.id) {
-      const data = await new TransactionService().fetchAccountTransactions(accessToken, currAccount.id);
+    if(currAccount?.AccountNumber) {
+      const data = await new TransactionService().fetchAccountTransactions(accessToken, currAccount.AccountNumber);
       setTransactions(data);
     }
   }
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      getAccountData();
+    }
+  }, [])
 
   useEffect(() => {
     if(isAuthenticated) {
@@ -55,6 +61,12 @@ function Transactions() {
 
   return (
       <div>
+        {currAccount && (
+          <div> account exists </div>
+        )}
+        {!currAccount && (
+          <div> account does not exists </div>
+        )}
         <div>
           {accountOptions.length > 1 && (
             <>
@@ -68,7 +80,7 @@ function Transactions() {
             <Button type="primary" onClick={() => setIsModalOpen(true)}>
               Open Modal
             </Button>
-            <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} accountId={currAccount?.id ?? 0} />
+            <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} accountId={currAccount?.AccountNumber ?? 0} />
           </>
         )}
       </div>

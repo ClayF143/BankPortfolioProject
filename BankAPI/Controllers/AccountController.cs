@@ -13,7 +13,7 @@ namespace BankAPI.Controllers
         [HttpGet("{id}")]
         public override async Task<Account?> Get(int id)
         {
-            var res = await Repository.Get(a => a.Id == id, nameof(Account.Transactions));
+            var res = await Repository.Get(a => a.AccountNumber == id, nameof(Account.Transactions));
             return res.FirstOrDefault();
         }
     }

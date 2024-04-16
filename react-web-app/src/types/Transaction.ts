@@ -1,5 +1,5 @@
 type Transaction = {
-  id: number,
+  id: number | null,
   accountId: number,
   amount: number,
   transactionDate: Date,

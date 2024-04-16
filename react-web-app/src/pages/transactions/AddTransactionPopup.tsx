@@ -1,10 +1,10 @@
-import { Button, DatePicker, Form, FormProps, Input, InputNumber, Modal } from 'antd';
-import { useState } from 'react';
-import Account from '../../types/Account';
+import { AutoComplete, Button, DatePicker, Form, FormProps, Input, InputNumber, Modal } from 'antd';
+import { useEffect, useState } from 'react';
 import Transaction from '../../types/Transaction';
 import dayjs from 'dayjs';
 import TransactionService from '../../services/TransactionService';
 import { useAuth } from '../../MyAuthProvider';
+import AccountService from '../../services/AccountService';
 
 interface IAddTransactionPopupProps {
   isOpen: boolean;
@@ -12,23 +12,65 @@ interface IAddTransactionPopupProps {
   accountId: number;
 }
 
+type AccountNumberOption = {
+  accountId: number,
+  accountNumber: string,
+}
+
+type TransactionViewModel = {
+  id: number,
+  accountNumber: number,
+  amount: number,
+  transactionDate: Date,
+  counterpartyName: string,
+  counterpartyAccountNumber: number | null
+}
+
 function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPopupProps) {
   const { accessToken } = useAuth();
+
+  const [accountNumberOptions, setAccountNumberOptions] = useState<AccountNumberOption[]>([]);
+  const [selectedAccountNumber, setSelectedAccountNumber] = useState<AccountNumberOption | null>(null);
+
+  const getAccountNumberOptions = async () => {
+    const data = await new AccountService().fetchAll(accessToken);
+    const options: AccountNumberOption[] = data.map(d => ({
+      accountId: d.AccountNumber,
+      accountNumber: ""
+     }));
+    setAccountNumberOptions(options);
+  }
+  useEffect(() => {
+    getAccountNumberOptions();
+  }, [])
 
   const handleOk = () => {
     setIsOpen(false);
   }
 
   const addTransaction = async (transaction: Transaction) => {
-    const res = await new TransactionService().add(accessToken, transaction);
+    await new TransactionService().add(accessToken, transaction);
   }
 
-  const onFinish: FormProps<Transaction>["onFinish"] = (values: Transaction) => {
-    console.log('Success:', values);
-    addTransaction(values);
+  const onFinish: FormProps<TransactionViewModel>["onFinish"] = (values: TransactionViewModel) => {
+    try {
+      const transaction: Transaction = {
+        id: null,
+        accountId: accountId,
+        amount: 0,
+        transactionDate: new Date(),
+        counterpartyName: '',
+        counterpartyAccountId: null
+      }
+      addTransaction(transaction);
+      console.log('Success Transaction Simulation:', values);
+    }
+    catch(e) {
+      console.log('Failed Transaction save: ', e);
+    }
   };
   
-  const onFinishFailed: FormProps<Transaction>["onFinishFailed"] = (errorInfo) => {
+  const onFinishFailed: FormProps<TransactionViewModel>["onFinishFailed"] = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -37,9 +79,8 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPo
       <Modal
         title="Simulate Transaction"
         open={isOpen}
-        onOk={handleOk}
-        
         onCancel={() => {setIsOpen(false);}}
+        footer={[ ]}
       >
         <Form
           name="basic"
@@ -47,6 +88,7 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPo
           wrapperCol={{ span: 16 }}
           initialValues={{ 
             accountId: accountId,
+            transactionDate: dayjs()
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -68,6 +110,11 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPo
             name="transactionDate"
           >
             <DatePicker style={{width: "100%"}}/>
+          </Form.Item>
+          <Form.Item>
+            <AutoComplete 
+              options={accountNumberOptions}
+            />
           </Form.Item>
           <Form.Item<Transaction>
             label="counterpartyName"

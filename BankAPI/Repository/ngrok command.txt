@@ -1,0 +1,1 @@
+ngrok http --domain=seagull-comic-kindly.ngrok-free.app https://localhost:7264

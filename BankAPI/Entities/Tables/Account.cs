@@ -1,8 +1,11 @@
-﻿namespace BankAPI.Entities.Tables
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BankAPI.Entities.Tables
 {
     public class Account
     {
-        public int Id { get; set; }
+        [Key]
+        public int AccountNumber { get; set; }
         public int UserId { get; set; }
         public string Name { get; set; } = "Primary";
         public string Type { get; set; } = "Checking";

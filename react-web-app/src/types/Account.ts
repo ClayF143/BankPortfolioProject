@@ -1,7 +1,7 @@
 import Transaction from "./Transaction";
 
 type Account = {
-  id: number,
+  AccountNumber: number,
   userId: number
   name: string,
   type: string,

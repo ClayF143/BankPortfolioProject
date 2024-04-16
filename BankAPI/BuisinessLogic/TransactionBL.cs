@@ -19,10 +19,10 @@ namespace BankAPI.BuisinessLogic
             _transactionRepository = transactionRepo;
         }
 
-        public async Task<List<Transaction>> GetAccountTransactions(int accountId)
+        public async Task<List<Transaction>> GetAccountTransactions(int AccountNumber)
         {
             var all = await _transactionRepository.GetAll();
-            return all.Where(t => t.AccountId == accountId).ToList();
+            return all.Where(t => t.AccountNumber == AccountNumber).ToList();
         }
     }
 }
