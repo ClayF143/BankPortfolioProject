@@ -4,7 +4,7 @@ namespace BankAPI.Entities.Tables
 {
     public class Account
     {
-        [Key]
+        public int Id { get; set; }
         public int AccountNumber { get; set; }
         public int UserId { get; set; }
         public string Name { get; set; } = "Primary";

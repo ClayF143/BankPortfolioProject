@@ -4,25 +4,20 @@ using BankAPI.Utility;
 
 namespace BankAPI.BuisinessLogic
 {
-    public interface ITransactionBL
+    public interface ITransactionBL: IBankBusinessLogic<Transaction>
     {
         Task<List<Transaction>> GetAccountTransactions(int accountId);
     }
 
     [Service(typeof(ITransactionBL))]
-    public class TransactionBL: ITransactionBL
+    public class TransactionBL: GenericBankBusinessLogic<Transaction>, ITransactionBL
     {
-        private ITransactionRepository _transactionRepository;
+        public TransactionBL(ITransactionRepository transactionRepo): base(transactionRepo) { }
 
-        public TransactionBL(ITransactionRepository transactionRepo)
+        public async Task<List<Transaction>> GetAccountTransactions(int id)
         {
-            _transactionRepository = transactionRepo;
-        }
-
-        public async Task<List<Transaction>> GetAccountTransactions(int AccountNumber)
-        {
-            var all = await _transactionRepository.GetAll();
-            return all.Where(t => t.AccountNumber == AccountNumber).ToList();
+            var all = await Repository.GetAll();
+            return all.Where(t => t.Id == id).ToList();
         }
     }
 }

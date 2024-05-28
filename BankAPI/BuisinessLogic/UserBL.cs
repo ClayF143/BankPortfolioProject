@@ -4,31 +4,26 @@ using BankAPI.Utility;
 
 namespace BankAPI.BuisinessLogic
 {
-    public interface IUserBL
-    {
-        Task Add(User user);
-    }
+    public interface IUserBL: IBankBusinessLogic<User> { }
 
     [Service(typeof(IUserBL))]
-    public class UserBL: IUserBL
+    public class UserBL: GenericBankBusinessLogic<User>, IUserBL
     {
-        private IUserRepository _userRepository;
-        private IAccountRepository _accountRepository;
+        private IAccountBL AccountBL;
 
-        public UserBL(IUserRepository userRepo, IAccountRepository accountRepo)
+        public UserBL(IUserRepository userRepo, IAccountBL accountBL): base(userRepo)
         {
-            _userRepository = userRepo;
-            _accountRepository = accountRepo;
+            AccountBL = accountBL;
         }
 
-        public async Task Add(User user)
+        public override async Task Add(User user)
         {
-            user = await _userRepository.Add(user);
+            user = await Repository.Add(user);
             var account = new Account
             {
                 UserId = user.Id
             };
-            await _accountRepository.Add(account);
+            await AccountBL.Add(account);
         }
     }
 }

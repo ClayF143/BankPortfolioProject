@@ -8,20 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankAPI.Controllers
 {
     [Authorize]
+    [AllowAnonymous]
     public class UserController : GenericBankController<User>
     {
         public IAuth0BusinessLogic auth0BusinessLogic { get; set; }
 
-        public UserController(IUserRepository repository, IAuth0BusinessLogic auth0bl) : base(repository)
+        public UserController(IUserBL bl, IAuth0BusinessLogic auth0bl) : base(bl)
         {
             auth0BusinessLogic = auth0bl;
-        }
-
-        [HttpGet("{id}")]
-        public override async Task<User?> Get(int id)
-        {
-            var res = await Repository.Get(a => a.Id == id, nameof(Entities.Tables.User.Accounts));
-            return res.FirstOrDefault();
         }
 
         [HttpGet()]
@@ -31,7 +25,7 @@ namespace BankAPI.Controllers
             if (emailClaim == null)
                 return null;
             var email = emailClaim.Value ?? "";
-            var users = await Repository.GetAll();
+            var users = await BL.GetAll();
             return users.FirstOrDefault(u => u.Email == email);
         }
 

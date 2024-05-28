@@ -1,7 +1,7 @@
 import './App.css';
 import { createElement, useState } from 'react';
 import Dashboard from './pages/Dashboard';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { LaptopOutlined, NotificationOutlined, UserOutlined, DollarOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from './misc-components/Login';
 import Transactions from './pages/transactions/Transactions';
@@ -12,27 +12,23 @@ const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
   key,
   label: `nav ${key}`,
 }));
-  
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-  const key = String(index + 1);
 
-  return {
-    key: `sub${key}`,
-    icon: createElement(icon),
-    label: `subnav ${key}`,
+const items2: MenuProps['items'] = [
+  {
+    key: 'transactions',
+    icon: createElement(DollarOutlined),
+    label: 'Transactions'
+  },
+  {
+    key: 'accounts',
+    icon: createElement(UserOutlined),
+    label: 'Accounts'
+  },
+]
 
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
 
 function App() {
-  const [content, setContent] = useState(<></>);
+  const [content, setContent] = useState(<Transactions />);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -40,12 +36,14 @@ function App() {
 
   const handleMenuSelection: MenuProps['onClick'] = (e) => {
     switch(e.key) {
-      case "1":
-        setContent(<div>hoi</div>);
-        break;
-      case "2":
+      case 'transactions':
         setContent(
           <Transactions />
+        )
+        break;
+      case 'accounts':
+        setContent(
+          <>Account wip</>
         )
         break;
       default:
@@ -54,7 +52,7 @@ function App() {
   };
 
   return (
-    <Layout>
+    <Layout style={{minHeight: '100vh'}}>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
         <Menu
           theme="dark"
@@ -71,25 +69,18 @@ function App() {
         <Sider style={{ background: colorBgContainer }} width={200}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            defaultSelectedKeys={['transactions']}
             style={{ height: '100%', borderRight: 0 }}
             items={items2}
             onClick={handleMenuSelection}
           />
         </Sider>
-        <Content style={{ padding: '24px 24px', minHeight: 400 }}>
+        <Content style={{ padding: '24px 24px' }}>
           {content}
-          {/*isAuthenticated && (
-            <UserList
-              getAccessTokenSilently={ getAccessTokenSilently }
-            />
-          )*/}
-          {/*<Dashboard />*/}
         </Content>
       </Layout>
       <Footer style={{ textAlign: 'center' }}>
-        Ant Design ©{new Date().getFullYear()} Created by Ant UED
+        Cents & Sensibility Trust Fund, {new Date().getFullYear()} Created by Clay Fike
       </Footer>
     </Layout>
   );

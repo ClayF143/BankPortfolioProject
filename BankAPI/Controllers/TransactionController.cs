@@ -1,6 +1,5 @@
 ﻿using BankAPI.BuisinessLogic;
 using BankAPI.Entities.Tables;
-using BankAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +8,16 @@ namespace BankAPI.Controllers
     [Authorize]
     public class TransactionController : GenericBankController<Transaction>
     {
-        private ITransactionBL _transactionBL;
-
-        public TransactionController(ITransactionRepository repository, ITransactionBL bl) : base(repository)
+        private ITransactionBL TransactionBL { get; set; }
+        public TransactionController(ITransactionBL bl) : base(bl)
         {
-            _transactionBL = bl;
+            TransactionBL = bl;
         }
 
         [HttpGet("{accountId}")]
         public async Task<List<Transaction>> GetAccountTransactions(int accountId)
         {
-            return await _transactionBL.GetAccountTransactions(accountId);
+            return await TransactionBL.GetAccountTransactions(accountId);
         }
     }
 }

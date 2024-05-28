@@ -29,21 +29,6 @@ type TransactionViewModel = {
 function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPopupProps) {
   const { accessToken } = useAuth();
 
-  const [accountNumberOptions, setAccountNumberOptions] = useState<AccountNumberOption[]>([]);
-  const [selectedAccountNumber, setSelectedAccountNumber] = useState<AccountNumberOption | null>(null);
-
-  const getAccountNumberOptions = async () => {
-    const data = await new AccountService().fetchAll(accessToken);
-    const options: AccountNumberOption[] = data.map(d => ({
-      accountId: d.AccountNumber,
-      accountNumber: ""
-     }));
-    setAccountNumberOptions(options);
-  }
-  useEffect(() => {
-    getAccountNumberOptions();
-  }, [])
-
   const handleOk = () => {
     setIsOpen(false);
   }
@@ -63,10 +48,13 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPo
         counterpartyAccountId: null
       }
       addTransaction(transaction);
-      console.log('Success Transaction Simulation:', values);
+      
     }
     catch(e) {
       console.log('Failed Transaction save: ', e);
+    }
+    finally {
+      console.log('Success Transaction Simulation:', values);
     }
   };
   
@@ -95,7 +83,7 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPo
           style={{ maxWidth: "90%" }}
         >
           <Form.Item<Transaction>
-            name="accountId"
+            name="id"
           >
             <input type="hidden" />
           </Form.Item>
@@ -110,11 +98,6 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPo
             name="transactionDate"
           >
             <DatePicker style={{width: "100%"}}/>
-          </Form.Item>
-          <Form.Item>
-            <AutoComplete 
-              options={accountNumberOptions}
-            />
           </Form.Item>
           <Form.Item<Transaction>
             label="counterpartyName"

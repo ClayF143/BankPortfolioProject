@@ -1,5 +1,4 @@
-﻿using BankAPI.Repository;
-using Microsoft.AspNetCore.Authorization;
+﻿using BankAPI.BuisinessLogic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers
@@ -9,26 +8,26 @@ namespace BankAPI.Controllers
     public abstract class GenericBankController<TEntity> : ControllerBase
         where TEntity : class
     {
-        protected IBankRepository<TEntity> Repository { get; }
+        protected IBankBusinessLogic<TEntity> BL { get; }
 
-        public GenericBankController(IBankRepository<TEntity> repository)
+        public GenericBankController(IBankBusinessLogic<TEntity> bl)
         {
-            Repository = repository;
+            BL = bl;
         }
 
         [HttpGet]
-        public virtual async Task<List<TEntity>> GetAll() => await Repository.GetAll();
+        public virtual async Task<List<TEntity>> GetAll() => await BL.GetAll();
 
         [HttpGet("{id}")]
-        public virtual async Task<TEntity?> Get(int id) => await Repository.Get(id);
+        public virtual async Task<TEntity?> Get(int id) => await BL.Get(id);
 
         [HttpPost]
-        public virtual async Task Add([FromBody] TEntity value) => await Repository.Add(value);
+        public virtual async Task Add([FromBody] TEntity value) => await BL.Add(value);
 
         [HttpPut("{id}")]
-        public virtual async Task Update(int id, [FromBody] TEntity value) => await Repository.Update(value);
+        public virtual async Task Update(int id, [FromBody] TEntity value) => await BL.Update(id, value);
 
         [HttpDelete("{id}")]
-        public virtual async Task Delete(int id) => await Repository.Delete(id);
+        public virtual async Task Delete(int id) => await BL.Delete(id);
     }
 }

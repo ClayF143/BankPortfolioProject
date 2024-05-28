@@ -20,14 +20,11 @@ function Transactions() {
   const { accessToken, isAuthenticated, myUser} = useAuth();
 
   const getAccountData = async () => {
-    console.log('start');
     const data = await new AccountService().fetchAll(accessToken);
     setAccountOptions(data);
     if(data.length == 1) {
-      console.log('boo');
       setCurrAccount(data[0]);
     }
-    console.log(currAccount?.AccountNumber);
   }
 
   const getTransactionData = async () => {
@@ -38,19 +35,19 @@ function Transactions() {
   }
 
   useEffect(() => {
-    if(isAuthenticated) {
+    if(isAuthenticated && accessToken) {
       getAccountData();
     }
   }, [])
 
   useEffect(() => {
-    if(isAuthenticated) {
+    if(isAuthenticated && accessToken) {
       getAccountData();
     } else {
       setCurrAccount(null);
       setAccountOptions([]);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, accessToken]);
 
   useEffect(() => {
     if(currAccount != null)
@@ -61,6 +58,14 @@ function Transactions() {
 
   return (
       <div>
+        {isAuthenticated && (
+          <div> you are authenticated </div>
+        )}
+        {!isAuthenticated && (
+          <div> you are not authenticated </div>
+        )}
+        <div>access token: {accessToken}</div>
+
         {currAccount && (
           <div> account exists </div>
         )}

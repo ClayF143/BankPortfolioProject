@@ -1,20 +1,12 @@
-﻿using BankAPI.Entities.Tables;
-using BankAPI.Repository;
+﻿using BankAPI.BuisinessLogic;
+using BankAPI.Entities.Tables;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers
 {
     [Authorize]
     public class AccountController : GenericBankController<Account>
     {
-        public AccountController(IAccountRepository repository) : base(repository) { }
-
-        [HttpGet("{id}")]
-        public override async Task<Account?> Get(int id)
-        {
-            var res = await Repository.Get(a => a.AccountNumber == id, nameof(Account.Transactions));
-            return res.FirstOrDefault();
-        }
+        public AccountController(IAccountBL bl) : base(bl) { }
     }
 }
