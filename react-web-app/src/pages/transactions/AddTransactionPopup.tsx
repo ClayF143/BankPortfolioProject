@@ -40,13 +40,15 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPo
   const onFinish: FormProps<TransactionViewModel>["onFinish"] = (values: TransactionViewModel) => {
     try {
       const transaction: Transaction = {
-        id: null,
+        id: 0,
         accountId: accountId,
         amount: 0,
         transactionDate: new Date(),
         counterpartyName: '',
         counterpartyAccountId: null
       }
+      console.log('transaction: ');
+      console.log(transaction);
       addTransaction(transaction);
       
     }
