@@ -12,11 +12,6 @@ interface IAddTransactionPopupProps {
   accountId: number;
 }
 
-type AccountNumberOption = {
-  accountId: number,
-  accountNumber: string,
-}
-
 type TransactionViewModel = {
   id: number,
   accountNumber: number,
@@ -42,9 +37,9 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPo
       const transaction: Transaction = {
         id: 0,
         accountId: accountId,
-        amount: 0,
-        transactionDate: new Date(),
-        counterpartyName: '',
+        amount: values.amount,
+        transactionDate: values.transactionDate,
+        counterpartyName: values.counterpartyName,
         counterpartyAccountId: null
       }
       console.log('transaction: ');

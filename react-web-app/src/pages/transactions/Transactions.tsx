@@ -83,7 +83,7 @@ function Transactions() {
         {currAccount && (
           <>
             <Button type="primary" onClick={() => setIsModalOpen(true)}>
-              Open Modal
+              Simulate Transaction
             </Button>
             <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} accountId={currAccount?.id ?? 0} />
           </>
