@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import UserList from "../../misc-components/UserList";
 import AddTransactionPopup from "./AddTransactionPopup";
 import { Button } from "antd";
 import Account from "../../types/Account";
@@ -9,6 +8,7 @@ import { useAuth } from "../../MyAuthProvider";
 import AccountService from "../../services/AccountService";
 import Transaction from "../../types/Transaction";
 import TransactionService from "../../services/TransactionService";
+import TransactionGrid from "./TransactionGrid";
 
 function Transactions() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,26 +28,20 @@ function Transactions() {
   }
 
   const getTransactionData = async () => {
-    if(currAccount?.AccountNumber) {
-      const data = await new TransactionService().fetchAccountTransactions(accessToken, currAccount.AccountNumber);
+    if(currAccount?.id) {
+      const data = await new TransactionService().fetchAccountTransactions(accessToken, currAccount.id);
       setTransactions(data);
     }
   }
 
   useEffect(() => {
-    if(isAuthenticated && accessToken) {
-      getAccountData();
-    }
-  }, [])
-
-  useEffect(() => {
-    if(isAuthenticated && accessToken) {
+    if(isAuthenticated) {
       getAccountData();
     } else {
       setCurrAccount(null);
       setAccountOptions([]);
     }
-  }, [isAuthenticated, accessToken]);
+  }, [accessToken]);
 
   useEffect(() => {
     if(currAccount != null)
@@ -58,34 +52,14 @@ function Transactions() {
 
   return (
       <div>
-        {isAuthenticated && (
-          <div> you are authenticated </div>
-        )}
-        {!isAuthenticated && (
-          <div> you are not authenticated </div>
-        )}
-        <div>access token: {accessToken}</div>
-
-        {currAccount && (
-          <div> account exists </div>
-        )}
-        {!currAccount && (
-          <div> account does not exists </div>
-        )}
-        <div>
-          {accountOptions.length > 1 && (
-            <>
-            </>
-          )}
-        </div>
-
-        <UserList />
         {currAccount && (
           <>
             <Button type="primary" onClick={() => setIsModalOpen(true)}>
               Simulate Transaction
             </Button>
-            <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} accountId={currAccount?.id ?? 0} />
+            <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} accountId={currAccount?.id ?? 0} getTransactions={getTransactionData} />
+
+            <TransactionGrid transactions={transactions} />
           </>
         )}
       </div>

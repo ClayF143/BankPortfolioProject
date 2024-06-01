@@ -1,15 +1,14 @@
-import { AutoComplete, Button, DatePicker, Form, FormProps, Input, InputNumber, Modal } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, DatePicker, Form, FormProps, Input, InputNumber, Modal } from 'antd';
 import Transaction from '../../types/Transaction';
 import dayjs from 'dayjs';
 import TransactionService from '../../services/TransactionService';
 import { useAuth } from '../../MyAuthProvider';
-import AccountService from '../../services/AccountService';
 
 interface IAddTransactionPopupProps {
   isOpen: boolean;
   setIsOpen: (x: boolean) => void;
   accountId: number;
+  getTransactions: () => void;
 }
 
 type TransactionViewModel = {
@@ -21,15 +20,15 @@ type TransactionViewModel = {
   counterpartyAccountNumber: number | null
 }
 
-function AddTransactionPopup({ isOpen, setIsOpen, accountId }: IAddTransactionPopupProps) {
+function AddTransactionPopup({ isOpen, setIsOpen, accountId, getTransactions }: IAddTransactionPopupProps) {
   const { accessToken } = useAuth();
 
-  const handleOk = () => {
-    setIsOpen(false);
-  }
-
   const addTransaction = async (transaction: Transaction) => {
-    await new TransactionService().add(accessToken, transaction);
+    await new TransactionService().add(accessToken, transaction)
+      .then(async () => {
+        await getTransactions();
+        setIsOpen(false);
+      });
   }
 
   const onFinish: FormProps<TransactionViewModel>["onFinish"] = (values: TransactionViewModel) => {

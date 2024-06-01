@@ -29,8 +29,8 @@ function UserList() {
             <AgGridReact
                 columnDefs={columnDefs}
                 rowData={users}
-                onGridReady={getData}>
-            </AgGridReact>
+                onGridReady={getData}
+            />
         </div>
     );
 }

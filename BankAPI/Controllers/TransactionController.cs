@@ -17,7 +17,8 @@ namespace BankAPI.Controllers
         [HttpGet("{accountId}")]
         public async Task<List<Transaction>> GetAccountTransactions(int accountId)
         {
-            return await TransactionBL.GetAccountTransactions(accountId);
+            var x = await TransactionBL.GetAccountTransactions(accountId);
+            return x;
         }
     }
 }

@@ -3,6 +3,7 @@ import { LaptopOutlined, NotificationOutlined, UserOutlined, DollarOutlined } fr
 import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from '../misc-components/Login';
 import Transactions from './transactions/Transactions';
+import UserList from '../misc-components/UserList';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -22,6 +23,11 @@ const items2: MenuProps['items'] = [
     icon: createElement(UserOutlined),
     label: 'Accounts'
   },
+  {
+    key: 'users',
+    icon: createElement(UserOutlined),
+    label: 'User List'
+  }
 ]
 
 function Dashboard() {
@@ -36,15 +42,21 @@ function Dashboard() {
       case 'transactions':
         setContent(
           <Transactions />
-        )
+        );
         break;
       case 'accounts':
         setContent(
           <>Account wip</>
-        )
+        );
+        break;
+      case 'users':
+        setContent(
+          <UserList />
+        );
         break;
       default:
         setContent(<></>);
+        break;
     }
   };
 

@@ -17,7 +17,7 @@ namespace BankAPI.BuisinessLogic
         public async Task<List<Transaction>> GetAccountTransactions(int id)
         {
             var all = await Repository.GetAll();
-            return all.Where(t => t.Id == id).ToList();
+            return all.Where(t => t.AccountId == id).ToList();
         }
     }
 }
