@@ -11,13 +11,15 @@ interface TransactionGripProps {
 
 function TransactionGrid({ transactions }: TransactionGripProps) {
   const [columnDefs] = useState<ColDef[]>([
-    { headerName: "Amount", field: "amount" },
-    { headerName: "Counterparty", field: "counterpartyName" },
-    { headerName: "Date", field: "transactionDate" },
+    { headerName: "Amount", field: "amount", flex: 1, filter: 'agNumberColumnFilter' },
+    { headerName: "Counterparty", field: "counterpartyName", flex: 2, filter: 'agTextColumnFilter' },
+    { headerName: "Date", field: "transactionDate", flex: 1, filter: 'agDateColumnFilter',
+      valueFormatter: (param) => new Date(param.value).toLocaleDateString('en-US')
+    },
   ]);
 
   return (
-    <div className="ag-theme-alpine" style={{ height: 400, width: columnDefs.length * 200 }}>
+    <div className="ag-theme-alpine" style={{ height: 400, width: '80%', minWidth: 400 }}>
       <AgGridReact
         columnDefs={columnDefs}
         rowData={transactions}
