@@ -11,7 +11,14 @@ interface TransactionGripProps {
 
 function TransactionGrid({ transactions }: TransactionGripProps) {
   const [columnDefs] = useState<ColDef[]>([
-    { headerName: "Amount", field: "amount", flex: 1, filter: 'agNumberColumnFilter' },
+    { headerName: "Amount", field: "amount", flex: 1, filter: 'agNumberColumnFilter',
+      cellRenderer: (param: any) => {
+        const value = param.value;
+        const sign = value < 0 ? '-' : '+';
+        return `${sign}$${Math.abs(value).toFixed(2)}`;
+      },
+      cellStyle: (param) => {return {color: param.value < 0 ? 'red' : 'green'}}
+    },
     { headerName: "Counterparty", field: "counterpartyName", flex: 2, filter: 'agTextColumnFilter' },
     { headerName: "Date", field: "transactionDate", flex: 1, filter: 'agDateColumnFilter',
       valueFormatter: (param) => new Date(param.value).toLocaleDateString('en-US')
@@ -19,7 +26,7 @@ function TransactionGrid({ transactions }: TransactionGripProps) {
   ]);
 
   return (
-    <div className="ag-theme-alpine" style={{ height: 400, width: '80%', minWidth: 400 }}>
+    <div className="ag-theme-alpine" style={{ height: 400, width: '95%', minWidth: 400 }}>
       <AgGridReact
         columnDefs={columnDefs}
         rowData={transactions}

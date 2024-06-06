@@ -1,5 +1,5 @@
-﻿using BankAPI.Entities.Tables;
-using BankAPI.Models;
+﻿using BankAPI.Models;
+using BankAPI.Models.Entities.Tables;
 using BankAPI.Repository;
 using BankAPI.Utility;
 

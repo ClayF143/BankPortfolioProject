@@ -1,6 +1,7 @@
 ﻿using BankAPI.BuisinessLogic;
-using BankAPI.Entities.Tables;
+using BankAPI.Models.Entities.Tables;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers
 {

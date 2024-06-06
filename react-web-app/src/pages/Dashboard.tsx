@@ -4,6 +4,7 @@ import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from '../misc-components/Login';
 import Transactions from './transactions/Transactions';
 import UserList from '../misc-components/UserList';
+import LineGraph from './LineGraphPrototype';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -27,8 +28,20 @@ const items2: MenuProps['items'] = [
     key: 'users',
     icon: createElement(UserOutlined),
     label: 'User List'
+  },
+  {
+    key: 'linegraph',
+    icon: createElement(UserOutlined),
+    label: 'Line Graph'
   }
 ]
+
+const lineGraphData = [
+  { x: new Date('2024-01-01'), y: 100 },
+  { x: new Date('2024-02-01'), y: 200 },
+  { x: new Date('2024-03-01'), y: 150 },
+  // Add more data points as needed
+];
 
 function Dashboard() {
     const [content, setContent] = useState(<Transactions />);
@@ -52,6 +65,11 @@ function Dashboard() {
       case 'users':
         setContent(
           <UserList />
+        );
+        break;
+      case 'linegraph':
+        setContent(
+          <LineGraph data={lineGraphData} />
         );
         break;
       default:

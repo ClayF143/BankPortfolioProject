@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace BankAPI.Repository
 {
     public interface IBankRepository<TEntity>
         where TEntity : class
     {
-        Task<List<TEntity>> GetAll(params string[] includes);
+        Task<List<TEntity>> GetAll();
         Task<TEntity?> Get(int id);
-        Task<List<TEntity>> Get(Expression<Func<TEntity, bool>> predicate, params string[] includes);
+        Task<List<TEntity>> GetAllUntracked();
         Task<TEntity> Add(TEntity entity);
         Task<TEntity> Update(TEntity entity);
         Task Delete(int id);
@@ -26,28 +25,14 @@ namespace BankAPI.Repository
             this.context = context;
         }
 
-        public async Task<List<TEntity>> GetAll(params string[] includes)
-        {
-            var query = Table.AsQueryable();
-            foreach(var include in includes)
-            {
-                query = query.Include(include);
-            }
-            return await query.ToListAsync();
-        }
+        public virtual async Task<List<TEntity>> GetAll() =>
+            await Table.ToListAsync();
 
-        public async Task<TEntity?> Get(int id) =>
+        public virtual async Task<TEntity?> Get(int id) =>
             await Table.FindAsync(id);
 
-        public async Task<List<TEntity>> Get(Expression<Func<TEntity, bool>> predicate, params string[] includes)
-        {
-            var query = Table.AsQueryable();
-            foreach (var include in includes)
-            {
-                query = query.Include(include);
-            }
-            return await query.Where(predicate).ToListAsync();
-        }
+        public async Task<List<TEntity>> GetAllUntracked() =>
+            await Table.AsNoTracking().ToListAsync();
 
         public async Task<TEntity> Add(TEntity entity)
         {

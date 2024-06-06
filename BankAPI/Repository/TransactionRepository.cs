@@ -1,6 +1,6 @@
-﻿using BankAPI.Entities.Tables;
-using BankAPI.Entities;
-using BankAPI.Utility;
+﻿using BankAPI.Utility;
+using BankAPI.Models.Entities;
+using BankAPI.Models.Entities.Tables;
 
 namespace BankAPI.Repository
 {

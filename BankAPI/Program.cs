@@ -1,4 +1,4 @@
-using BankAPI.Entities;
+using BankAPI.Models.Entities;
 using BankAPI.Utility.Service_Registration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;

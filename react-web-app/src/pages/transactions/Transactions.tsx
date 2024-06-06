@@ -6,31 +6,31 @@ import { Button } from "antd";
 import Account from "../../types/Account";
 import { useAuth } from "../../MyAuthProvider";
 import AccountService from "../../services/AccountService";
-import Transaction from "../../types/Transaction";
-import TransactionService from "../../services/TransactionService";
 import TransactionGrid from "./TransactionGrid";
 
 function Transactions() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { accessToken, isAuthenticated, myUser} = useAuth();
 
   const [currAccount, setCurrAccount] = useState<Account | null>(null);
   const [accountOptions, setAccountOptions] = useState<Account[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { accessToken, isAuthenticated, myUser} = useAuth();
 
   const getAccountData = async () => {
     const data = await new AccountService().fetchAll(accessToken);
     setAccountOptions(data);
     if(data.length == 1) {
-      setCurrAccount(data[0]);
+      const account = await new AccountService().fetch(accessToken, data[0].id);
+      setCurrAccount(account);
     }
   }
 
-  const getTransactionData = async () => {
-    if(currAccount?.id) {
-      const data = await new TransactionService().fetchAccountTransactions(accessToken, currAccount.id);
-      setTransactions(data);
+  const refreshAccount = async () => {
+    if(currAccount == null)
+      await getAccountData();
+    else {
+      const newAccount = await new AccountService().fetch(accessToken, currAccount.id);
+      setCurrAccount(newAccount);
     }
   }
 
@@ -43,23 +43,24 @@ function Transactions() {
     }
   }, [accessToken]);
 
-  useEffect(() => {
-    if(currAccount != null)
-      getTransactionData();
-    else
-      setTransactions([]);
-  }, [currAccount])
-
   return (
       <div>
         {currAccount && (
           <>
-            <Button type="primary" onClick={() => setIsModalOpen(true)}>
-              Simulate Transaction
-            </Button>
-            <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} accountId={currAccount?.id ?? 0} getTransactions={getTransactionData} />
-
-            <TransactionGrid transactions={transactions} />
+            <div className="row">
+              <div className="col">
+                <Button type="primary" onClick={() => setIsModalOpen(true)}>
+                  Simulate Transaction
+                </Button>  
+              </div>
+              <div className="col">
+                select account dropdown wip, not going to add until there's a way to add accounts
+              </div>
+            </div>
+            <div className="row mt-2">
+              <TransactionGrid transactions={currAccount.transactions} />
+              <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} account={currAccount} refreshAccount={refreshAccount} />
+            </div>
           </>
         )}
       </div>

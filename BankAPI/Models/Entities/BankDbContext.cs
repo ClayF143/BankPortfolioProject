@@ -1,9 +1,9 @@
-﻿using BankAPI.Entities.Tables;
+﻿using BankAPI.Models.Entities.Tables;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankAPI.Entities
+namespace BankAPI.Models.Entities
 {
-    public class BankDbContext: DbContext
+    public class BankDbContext : DbContext
     {
         public BankDbContext(DbContextOptions<BankDbContext> context) : base(context) { }
 

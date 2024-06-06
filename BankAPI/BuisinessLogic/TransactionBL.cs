@@ -1,23 +1,29 @@
-﻿using BankAPI.Entities.Tables;
+﻿using BankAPI.Models.Entities.Tables;
 using BankAPI.Repository;
 using BankAPI.Utility;
 
 namespace BankAPI.BuisinessLogic
 {
-    public interface ITransactionBL: IBankBusinessLogic<Transaction>
-    {
-        Task<List<Transaction>> GetAccountTransactions(int accountId);
-    }
+    public interface ITransactionBL: IBankBusinessLogic<Transaction> { }
 
     [Service(typeof(ITransactionBL))]
     public class TransactionBL: GenericBankBusinessLogic<Transaction>, ITransactionBL
     {
-        public TransactionBL(ITransactionRepository transactionRepo): base(transactionRepo) { }
-
-        public async Task<List<Transaction>> GetAccountTransactions(int id)
+        public IAccountBL AccountBL;
+        public TransactionBL(ITransactionRepository transactionRepo, IAccountBL accountBL): base(transactionRepo)
         {
-            var all = await Repository.GetAll();
-            return all.Where(t => t.AccountId == id).ToList();
+            AccountBL = accountBL;
+        }
+
+        public override async Task Add(Transaction value)
+        {
+            var account = await AccountBL.Get(value.AccountId);
+            account.Balance += value.Amount;
+            await AccountBL.Update(account);
+
+            value.BalanceSnapshot = account.Balance;
+
+            await base.Add(value);
         }
     }
 }

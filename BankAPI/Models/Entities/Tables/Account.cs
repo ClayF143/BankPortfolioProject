@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BankAPI.Entities.Tables
+namespace BankAPI.Models.Entities.Tables
 {
     public class Account
     {

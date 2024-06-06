@@ -1,4 +1,4 @@
-﻿using BankAPI.Entities.Tables;
+﻿using BankAPI.Models.Entities.Tables;
 using BankAPI.Repository;
 using BankAPI.Utility;
 

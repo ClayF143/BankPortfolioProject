@@ -3,12 +3,13 @@ import Transaction from '../../types/Transaction';
 import dayjs from 'dayjs';
 import TransactionService from '../../services/TransactionService';
 import { useAuth } from '../../MyAuthProvider';
+import Account from '../../types/Account';
 
 interface IAddTransactionPopupProps {
   isOpen: boolean;
   setIsOpen: (x: boolean) => void;
-  accountId: number;
-  getTransactions: () => void;
+  account: Account;
+  refreshAccount: () => void;
 }
 
 type TransactionViewModel = {
@@ -20,13 +21,14 @@ type TransactionViewModel = {
   counterpartyAccountNumber: number | null
 }
 
-function AddTransactionPopup({ isOpen, setIsOpen, accountId, getTransactions }: IAddTransactionPopupProps) {
+function AddTransactionPopup({ isOpen, setIsOpen, account, refreshAccount }: IAddTransactionPopupProps) {
   const { accessToken } = useAuth();
 
   const addTransaction = async (transaction: Transaction) => {
+    console.log('adding');
     await new TransactionService().add(accessToken, transaction)
       .then(async () => {
-        await getTransactions();
+        refreshAccount();
         setIsOpen(false);
       });
   }
@@ -35,8 +37,9 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId, getTransactions }: 
     try {
       const transaction: Transaction = {
         id: 0,
-        accountId: accountId,
+        accountId: account.id,
         amount: values.amount,
+        balanceSnapshot: null,
         transactionDate: values.transactionDate,
         counterpartyName: values.counterpartyName,
         counterpartyAccountId: null
@@ -71,7 +74,7 @@ function AddTransactionPopup({ isOpen, setIsOpen, accountId, getTransactions }: 
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ 
-            accountId: accountId,
+            accountId: account.id,
             transactionDate: dayjs()
           }}
           onFinish={onFinish}

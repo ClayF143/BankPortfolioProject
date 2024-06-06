@@ -25,7 +25,7 @@ namespace BankAPI.Controllers
         public virtual async Task Add([FromBody] TEntity value) => await BL.Add(value);
 
         [HttpPut("{id}")]
-        public virtual async Task Update(int id, [FromBody] TEntity value) => await BL.Update(id, value);
+        public virtual async Task Update(int id, [FromBody] TEntity value) => await BL.Update(value);
 
         [HttpDelete("{id}")]
         public virtual async Task Delete(int id) => await BL.Delete(id);
