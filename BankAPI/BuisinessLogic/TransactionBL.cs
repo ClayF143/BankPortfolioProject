@@ -7,7 +7,7 @@ namespace BankAPI.BuisinessLogic
     public interface ITransactionBL: IBankBusinessLogic<Transaction> { }
 
     [Service(typeof(ITransactionBL))]
-    public class TransactionBL: GenericBankBusinessLogic<Transaction>, ITransactionBL
+    public class TransactionBL: GenericBankBusinessLogic<Transaction, ITransactionRepository>, ITransactionBL
     {
         public IAccountBL AccountBL;
         public TransactionBL(ITransactionRepository transactionRepo, IAccountBL accountBL): base(transactionRepo)

@@ -1,16 +1,18 @@
 ﻿using BankAPI.BuisinessLogic;
+using BankAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public abstract class GenericBankController<TEntity> : ControllerBase
+    public abstract class GenericBankController<TEntity, TBL> : ControllerBase
         where TEntity : class
+        where TBL : IBankBusinessLogic<TEntity>
     {
-        protected IBankBusinessLogic<TEntity> BL { get; }
+        protected TBL BL { get; set; }
 
-        public GenericBankController(IBankBusinessLogic<TEntity> bl)
+        public GenericBankController(TBL bl)
         {
             BL = bl;
         }

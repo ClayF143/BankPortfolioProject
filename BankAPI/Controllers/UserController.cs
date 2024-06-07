@@ -8,15 +8,13 @@ namespace BankAPI.Controllers
 {
     [Authorize]
     [AllowAnonymous]
-    public class UserController : GenericBankController<User>
+    public class UserController : GenericBankController<User, IUserBL>
     {
         public IAuth0BusinessLogic auth0BusinessLogic { get; set; }
-        public IUserBL userBL{ get; set; }
 
         public UserController(IUserBL bl, IAuth0BusinessLogic auth0bl) : base(bl)
         {
             auth0BusinessLogic = auth0bl;
-            userBL = bl;
         }
 
         [HttpGet]

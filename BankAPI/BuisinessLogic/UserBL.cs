@@ -8,9 +8,9 @@ namespace BankAPI.BuisinessLogic
     public interface IUserBL: IBankBusinessLogic<User> { }
 
     [Service(typeof(IUserBL))]
-    public class UserBL: GenericBankBusinessLogic<User>, IUserBL
+    public class UserBL: GenericBankBusinessLogic<User, IUserRepository>, IUserBL
     {
-        private IAccountBL AccountBL;
+        protected IAccountBL AccountBL { get; set; }
 
         public UserBL(IUserRepository userRepo, IAccountBL accountBL): base(userRepo)
         {

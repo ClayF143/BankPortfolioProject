@@ -12,11 +12,13 @@ namespace BankAPI.BuisinessLogic
         Task Delete(int id);
     }
 
-    public abstract class GenericBankBusinessLogic<TEntity>: IBankBusinessLogic<TEntity> where TEntity : class
+    public abstract class GenericBankBusinessLogic<TEntity, TRepo>: IBankBusinessLogic<TEntity>
+        where TEntity : class
+        where TRepo : IBankRepository<TEntity>
     {
-        protected IBankRepository<TEntity> Repository { get; }
+        protected TRepo Repository { get; }
 
-        public GenericBankBusinessLogic(IBankRepository<TEntity> repository)
+        public GenericBankBusinessLogic(TRepo repository)
         {
             Repository = repository;
         }

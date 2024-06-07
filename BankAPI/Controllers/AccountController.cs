@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankAPI.Controllers
 {
     [Authorize]
-    public class AccountController : GenericBankController<Account>
+    public class AccountController : GenericBankController<Account, IAccountBL>
     {
         public AccountController(IAccountBL bl) : base(bl) { }
     }
