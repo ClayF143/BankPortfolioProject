@@ -13,13 +13,18 @@ function TransactionGrid({ transactions }: TransactionGripProps) {
   const [columnDefs] = useState<ColDef[]>([
     { headerName: "Amount", field: "amount", flex: 1, filter: 'agNumberColumnFilter',
       cellRenderer: (param: any) => {
-        const value = param.value;
-        const sign = value < 0 ? '-' : '+';
-        return `${sign}$${Math.abs(value).toFixed(2)}`;
+        const sign = param.value < 0 ? '-' : '+';
+        return `${sign}$${Math.abs(param.value).toFixed(2)}`;
       },
       cellStyle: (param) => {return {color: param.value < 0 ? 'red' : 'green'}}
     },
     { headerName: "Counterparty", field: "counterpartyName", flex: 2, filter: 'agTextColumnFilter' },
+    { headerName: "Balance History", field: "balanceSnapshot", flex: 1, filter: 'agNumberColumnFilter',
+      cellRenderer: (param: any) => {
+        const sign = param.value < 0 ? '-' : '';
+        return `${sign}$${Math.abs(param.value).toFixed(2)}`
+      }
+    },
     { headerName: "Date", field: "transactionDate", flex: 1, filter: 'agDateColumnFilter',
       valueFormatter: (param) => new Date(param.value).toLocaleDateString('en-US')
     },
