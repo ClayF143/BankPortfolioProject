@@ -20,8 +20,8 @@ function UserList() {
     ]);
     
     const getData = async () => {
-        const res = isAuthenticated ? await new UserServices().fetchAll(accessToken) : [];
-        setUsers(res);
+        //const res = isAuthenticated ? await new UserServices().fetchAll(accessToken) : [];
+        setUsers([]);
     };
 
     return (

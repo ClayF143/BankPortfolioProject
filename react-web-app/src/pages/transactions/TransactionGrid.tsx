@@ -10,13 +10,13 @@ interface TransactionGripProps {
 }
 
 function TransactionGrid({ transactions }: TransactionGripProps) {
-  const [columnDefs] = useState<ColDef[]>([
+  const columnDefs: ColDef[] = [
     { headerName: "Amount", field: "amount", flex: 1, filter: 'agNumberColumnFilter',
       cellRenderer: (param: any) => {
         const sign = param.value < 0 ? '-' : '+';
         return `${sign}$${Math.abs(param.value).toFixed(2)}`;
       },
-      cellStyle: (param) => {return {color: param.value < 0 ? 'red' : 'green'}}
+      cellStyle: (param: any) => {return {color: param.value < 0 ? 'red' : 'green'}}
     },
     { headerName: "Counterparty", field: "counterpartyName", flex: 2, filter: 'agTextColumnFilter' },
     { headerName: "Balance History", field: "balanceSnapshot", flex: 1, filter: 'agNumberColumnFilter',
@@ -26,9 +26,9 @@ function TransactionGrid({ transactions }: TransactionGripProps) {
       }
     },
     { headerName: "Date", field: "transactionDate", flex: 1, filter: 'agDateColumnFilter',
-      valueFormatter: (param) => new Date(param.value).toLocaleDateString('en-US')
+      valueFormatter: (param: any) => new Date(param.value).toLocaleDateString('en-US')
     },
-  ]);
+  ];
 
   return (
     <div className="ag-theme-alpine" style={{ height: 400, width: '95%', minWidth: 400 }}>

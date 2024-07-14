@@ -7,42 +7,34 @@ import Account from "../../types/Account";
 import { useAuth } from "../../MyAuthProvider";
 import AccountService from "../../services/AccountService";
 import TransactionGrid from "./TransactionGrid";
+import User from "../../types/User";
 
-function Transactions() {
-  const { accessToken, isAuthenticated, myUser} = useAuth();
+interface TransactionProps {
+  user: User | null;
+  refreshUser: () => void;
+};
 
-  const [currAccount, setCurrAccount] = useState<Account | null>(null);
+function Transactions({ user, refreshUser }: TransactionProps) {
+  const { accessToken, isAuthenticated, authUser} = useAuth();
+
+  const [currAccount, setCurrAccount] = useState<Account | undefined>(user ? user.accounts[0] : undefined);
   const [accountOptions, setAccountOptions] = useState<Account[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-  const getAccountData = async () => {
-    const data = await new AccountService().fetchAll(accessToken);
-    setAccountOptions(data);
-    if(data.length == 1) {
-      const account = await new AccountService().fetch(accessToken, data[0].id);
-      setCurrAccount(account);
-    }
-  }
-
-  const refreshAccount = async () => {
-    if(currAccount == null)
-      await getAccountData();
-    else {
-      const newAccount = await new AccountService().fetch(accessToken, currAccount.id);
-      setCurrAccount(newAccount);
-    }
-  }
-
+  
   useEffect(() => {
-    if(isAuthenticated) {
-      getAccountData();
+    console.log('user in transaction', user);
+    if(user) {
+      setAccountOptions(user.accounts);
+      if(user.accounts.length == 1) {
+        setCurrAccount(user.accounts[0]);
+      }
     } else {
-      setCurrAccount(null);
+      setCurrAccount(undefined);
       setAccountOptions([]);
     }
-  }, [accessToken]);
-
+  }, [user]);
+  
   return (
       <div>
         {currAccount && (
@@ -59,7 +51,7 @@ function Transactions() {
             </div>
             <div className="row mt-2">
               <TransactionGrid transactions={currAccount.transactions} />
-              <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} account={currAccount} refreshAccount={refreshAccount} />
+              <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} account={currAccount} refreshAccount={refreshUser} />
             </div>
           </>
         )}

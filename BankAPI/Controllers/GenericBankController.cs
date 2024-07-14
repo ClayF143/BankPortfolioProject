@@ -1,5 +1,4 @@
 ﻿using BankAPI.BuisinessLogic;
-using BankAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankAPI.Controllers

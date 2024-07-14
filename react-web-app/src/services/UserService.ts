@@ -1,19 +1,16 @@
-import GenericService from "./GenericService";
 import User from "../types/User";
 import axios from "axios";
+import config from "../config";
 
-class UserService extends GenericService<User> {
-    constructor() {
-        super("user");
-    }
+const baseControllerUrl = `${config.baseApiUrl}/user`;
 
-    async fetchCurrentUser(accessToken: string): Promise<User> {
-        const response = await axios.get(`${this.baseControllerUrl}/getcurrentuser`, {
+const UserService = {
+    fetchCurrentUser: async (accessToken: string) => {
+        return (await axios.get(`${baseControllerUrl}/getcurrentuser`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
-        });
-        return response.data;
+        })).data;
     }
 }
 

@@ -11,6 +11,7 @@ interface AuthContextType {
   myUser: User | null;
   loginWithRedirect: (options?: RedirectLoginOptions<AppState> | undefined) => Promise<void>;
   logout: (options?: LogoutOptions | undefined) => Promise<void>;
+  refreshAuthVals: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -23,6 +24,9 @@ const AuthContext = createContext<AuthContextType>({
   },
   logout: async (options?: LogoutOptions) => {
     console.warn("logout function not implemented", options);
+  },
+  refreshAuthVals: async () => {
+    console.warn("getToken not implemented");
   }
 });
 
@@ -36,25 +40,25 @@ const MyAuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useState<string>("");
   const [myUser, setMyUser] = useState<User | null>(null);
 
+  const refreshAuthVals = async () => {
+    if (isAuthenticated) {
+      const token = (await getAccessTokenSilently({
+        authorizationParams: {
+            audience: `${config.auth0ApiIdentifier}`
+        }
+      })) ?? "";
+      setAccessToken(token);
+
+      const currUser = await UserServices.fetchCurrentUser(token);
+      setMyUser(currUser);
+    }
+  };
+
   useEffect(() => {
-    const getToken = async () => {
-      if (isAuthenticated) {
-        const token = (await getAccessTokenSilently({
-          authorizationParams: {
-              audience: `${config.auth0ApiIdentifier}`
-          }
-        })) ?? "";
-        setAccessToken(token);
+    refreshAuthVals();
+  }, [authUser]);
 
-        const currUser = await new UserServices().fetchCurrentUser(token);
-        setMyUser(currUser);
-      }
-    };
-
-    getToken();
-  }, [isAuthenticated, getAccessTokenSilently]);
-
-  return <AuthContext.Provider value={{ accessToken, isAuthenticated, authUser, myUser, loginWithRedirect, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ accessToken, isAuthenticated, authUser, myUser, loginWithRedirect, logout, refreshAuthVals }}>{children}</AuthContext.Provider>;
 };
 
 const useAuth = (): AuthContextType => useContext(AuthContext);

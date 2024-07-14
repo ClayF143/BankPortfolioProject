@@ -1,62 +1,38 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
-import { Chart, ChartOptions, registerables } from 'chart.js';
-import 'chartjs-adapter-date-fns';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import User from '../types/User'
 
-Chart.register(...registerables);
+const myData = [
+  { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
+  { name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
+  // ...
+];
+
+const calculateData = (user: User) => {
+  return user.accounts.map((account) => {
+    return account.transactions.map((transaction) => {
+      return {
+        account: account.name,
+        balance: transaction.balanceSnapshot,
+        date: transaction.transactionDate,
+      };
+    });
+  });
+};
 
 interface LineGraphProps {
-  data: { x: Date; y: number }[];
+  user: User;
 }
 
-const LineGraph = ({ data }: LineGraphProps) => {
-  const options: ChartOptions<'line'> = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-      },
-      tooltip: {
-        mode: 'index', // TypeScript will infer the correct type
-        intersect: false,
-      },
-    },
-    scales: {
-      x: {
-        type: 'time',
-        title: {
-          display: true,
-          text: 'Time',
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: 'Dollar Amount',
-        },
-      },
-    },
-  };
-
-
-    const chartData = {
-        datasets: [
-            {
-                label: 'Dollar Amount Over Time',
-                data: data,
-                fill: false,
-                borderColor: 'rgba(75,192,192,1)',
-                tension: 0.1,
-            },
-        ],
-    };
-
-    return (
-      <>
-        <Line data={chartData} options={options} />
-        hoi
-      </>
-    );
-};
+const LineGraph = ({ user }: LineGraphProps) => (
+  <LineChart width={500} height={300} data={calculateData(user)}>
+    <XAxis dataKey="name" />
+    <YAxis />
+    <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+    <Tooltip />
+    <Legend />
+    <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+    <Line type="monotone" dataKey="pv" stroke="#82ca9d" />
+  </LineChart>
+);
 
 export default LineGraph;

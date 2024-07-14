@@ -34,8 +34,8 @@ namespace BankAPI.Controllers
             if (emailClaim == null)
                 return null;
             var email = emailClaim.Value ?? "";
-            var users = await BL.GetAll();
-            return users.FirstOrDefault(u => u.Email == email);
+            var user = await BL.GetUserByEmail(email);
+            return user;
         }
     }
 }

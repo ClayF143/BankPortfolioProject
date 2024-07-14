@@ -1,10 +1,12 @@
-import { createElement, useState } from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined, DollarOutlined } from '@ant-design/icons';
+import { createElement, useEffect, useState } from 'react';
+import { UserOutlined, DollarOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from '../misc-components/Login';
 import Transactions from './transactions/Transactions';
 import UserList from '../misc-components/UserList';
-import LineGraph from './LineGraphPrototype';
+import User from '../types/User';
+import { useAuth } from '../MyAuthProvider';
+import UserService from '../services/UserService';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -36,46 +38,20 @@ const items2: MenuProps['items'] = [
   }
 ]
 
-const lineGraphData = [
-  { x: new Date('2024-01-01'), y: 100 },
-  { x: new Date('2024-02-01'), y: 200 },
-  { x: new Date('2024-03-01'), y: 150 },
-  // Add more data points as needed
-];
-
 function Dashboard() {
-    const [content, setContent] = useState(<Transactions />);
+  const { accessToken, authUser, myUser, refreshAuthVals} = useAuth();
+  const [selectedMenuItem, setSelectedMenuItem] = useState('transactions');
+
+  useEffect(() => {
+    console.log('user in dashboard: ', myUser);
+  }, [myUser])
 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   const handleMenuSelection: MenuProps['onClick'] = (e) => {
-    switch(e.key) {
-      case 'transactions':
-        setContent(
-          <Transactions />
-        );
-        break;
-      case 'accounts':
-        setContent(
-          <>Account wip</>
-        );
-        break;
-      case 'users':
-        setContent(
-          <UserList />
-        );
-        break;
-      case 'linegraph':
-        setContent(
-          <LineGraph data={lineGraphData} />
-        );
-        break;
-      default:
-        setContent(<></>);
-        break;
-    }
+    setSelectedMenuItem(e.key);
   };
 
   return (
@@ -103,7 +79,18 @@ function Dashboard() {
           />
         </Sider>
         <Content style={{ padding: '24px 24px' }}>
-          {content}
+          {selectedMenuItem === 'transactions' && (
+            <Transactions user={myUser} refreshUser={refreshAuthVals} />
+          )}
+          {selectedMenuItem === 'accounts' && (
+            <>Account wip</>
+          )}
+          {selectedMenuItem === 'users' && (
+            <UserList />
+          )}
+          {selectedMenuItem === 'linegraph' && (
+            <></>
+          )}
         </Content>
       </Layout>
       <Footer style={{ textAlign: 'center' }}>

@@ -22,6 +22,12 @@ namespace BankAPI.BuisinessLogic
             _userBL = userBL;
         }
 
+        /* So one of the reasons I'm updating is that the amount of information sent
+         * changes based on whether you login with google or apple or a created auth0 account
+         * which is annoying, if you keep switching between the two this will delete and add the 
+         * information that's missing or added each time. Not ideal, not efficient, but my user
+         * table gets the information it needs this way.
+         */
         public async Task SyncUserFromAuth0(Auth0UserModel userData)
         {
             List<User> users = await _userRepository.GetAll();

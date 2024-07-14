@@ -5,7 +5,10 @@ using BankAPI.Utility;
 
 namespace BankAPI.BuisinessLogic
 {
-    public interface IUserBL: IBankBusinessLogic<User> { }
+    public interface IUserBL: IBankBusinessLogic<User>
+    {
+        Task<User?> GetUserByEmail(string email);
+    }
 
     [Service(typeof(IUserBL))]
     public class UserBL: GenericBankBusinessLogic<User, IUserRepository>, IUserBL
@@ -15,6 +18,11 @@ namespace BankAPI.BuisinessLogic
         public UserBL(IUserRepository userRepo, IAccountBL accountBL): base(userRepo)
         {
             AccountBL = accountBL;
+        }
+
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            return await Repository.GetUserByEmail(email);
         }
 
         public override async Task Add(User user)

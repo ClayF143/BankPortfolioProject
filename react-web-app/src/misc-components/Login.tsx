@@ -9,10 +9,6 @@ function Login() {
     isAuthenticated ? logout() : loginWithRedirect();
   };
 
-  useEffect(() => {
-    console.log(authUser?.picture)
-  }, [authUser?.picture])
-
   return (
     <Tooltip placement="bottom" title={isAuthenticated ? "Logout" : "Login"} color="blue">
       <Avatar
