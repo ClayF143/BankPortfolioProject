@@ -1,11 +1,6 @@
-import GenericService from "./GenericService";
-import Account from "../types/Transaction";
-import axios from "axios";
+import Transaction from "../types/Transaction";
+import ServiceFactory from "./ServiceFactory";
 
-class TransactionService extends GenericService<Account> {
-    constructor() {
-        super("transaction");
-    }
-}
+const TransactionService = ServiceFactory.writeOnlyService<Transaction>('transaction');
 
 export default TransactionService;

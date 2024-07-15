@@ -5,7 +5,7 @@ import config from "../config";
 const baseControllerUrl = `${config.baseApiUrl}/user`;
 
 const UserService = {
-    fetchCurrentUser: async (accessToken: string) => {
+    fetchCurrentUser: async (accessToken: string): Promise<User> => {
         return (await axios.get(`${baseControllerUrl}/getcurrentuser`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`

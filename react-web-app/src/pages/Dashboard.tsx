@@ -39,12 +39,7 @@ const items2: MenuProps['items'] = [
 ]
 
 function Dashboard() {
-  const { accessToken, authUser, myUser, refreshAuthVals} = useAuth();
   const [selectedMenuItem, setSelectedMenuItem] = useState('transactions');
-
-  useEffect(() => {
-    console.log('user in dashboard: ', myUser);
-  }, [myUser])
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -80,7 +75,7 @@ function Dashboard() {
         </Sider>
         <Content style={{ padding: '24px 24px' }}>
           {selectedMenuItem === 'transactions' && (
-            <Transactions user={myUser} refreshUser={refreshAuthVals} />
+            <Transactions />
           )}
           {selectedMenuItem === 'accounts' && (
             <>Account wip</>

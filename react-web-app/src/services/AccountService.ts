@@ -1,10 +1,6 @@
-import GenericService from "./GenericService";
 import Account from "../types/Account";
+import ServiceFactory from "./ServiceFactory";
 
-class AccountService extends GenericService<Account> {
-    constructor() {
-        super("account");
-    }
-}
+const AccountService = ServiceFactory.writeOnlyService<Account>('account');
 
 export default AccountService;

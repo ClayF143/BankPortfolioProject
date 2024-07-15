@@ -26,7 +26,7 @@ function AddTransactionPopup({ isOpen, setIsOpen, account, refreshAccount }: IAd
 
   const addTransaction = async (transaction: Transaction) => {
     console.log('adding');
-    await new TransactionService().add(accessToken, transaction)
+    await TransactionService.add(accessToken, transaction)
       .then(async () => {
         refreshAccount();
         setIsOpen(false);

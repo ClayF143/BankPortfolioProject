@@ -9,31 +9,26 @@ import AccountService from "../../services/AccountService";
 import TransactionGrid from "./TransactionGrid";
 import User from "../../types/User";
 
-interface TransactionProps {
-  user: User | null;
-  refreshUser: () => void;
-};
+function Transactions() {
+  const { myUser, refreshAuthVals} = useAuth();
 
-function Transactions({ user, refreshUser }: TransactionProps) {
-  const { accessToken, isAuthenticated, authUser} = useAuth();
-
-  const [currAccount, setCurrAccount] = useState<Account | undefined>(user ? user.accounts[0] : undefined);
+  const [currAccount, setCurrAccount] = useState<Account | undefined>(myUser ? myUser.accounts[0] : undefined);
   const [accountOptions, setAccountOptions] = useState<Account[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   
   useEffect(() => {
-    console.log('user in transaction', user);
-    if(user) {
-      setAccountOptions(user.accounts);
-      if(user.accounts.length == 1) {
-        setCurrAccount(user.accounts[0]);
+    console.log('user in transaction', myUser);
+    if(myUser) {
+      setAccountOptions(myUser.accounts);
+      if(myUser.accounts.length == 1) {
+        setCurrAccount(myUser.accounts[0]);
       }
     } else {
       setCurrAccount(undefined);
       setAccountOptions([]);
     }
-  }, [user]);
+  }, [myUser]);
   
   return (
       <div>
@@ -51,7 +46,7 @@ function Transactions({ user, refreshUser }: TransactionProps) {
             </div>
             <div className="row mt-2">
               <TransactionGrid transactions={currAccount.transactions} />
-              <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} account={currAccount} refreshAccount={refreshUser} />
+              <AddTransactionPopup isOpen={isModalOpen} setIsOpen={setIsModalOpen} account={currAccount} refreshAccount={refreshAuthVals} />
             </div>
           </>
         )}
