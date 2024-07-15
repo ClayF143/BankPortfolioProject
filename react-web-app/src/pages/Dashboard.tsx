@@ -1,12 +1,9 @@
-import { createElement, useEffect, useState } from 'react';
+import { createElement, useState } from 'react';
 import { UserOutlined, DollarOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from '../misc-components/Login';
 import Transactions from './transactions/Transactions';
 import UserList from '../misc-components/UserList';
-import User from '../types/User';
-import { useAuth } from '../MyAuthProvider';
-import UserService from '../services/UserService';
 
 const { Header, Content, Footer, Sider } = Layout;
 

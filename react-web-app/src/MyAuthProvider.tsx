@@ -58,7 +58,11 @@ const MyAuthProvider = ({ children }: AuthProviderProps) => {
     refreshAuthVals();
   }, [authUser]);
 
-  return <AuthContext.Provider value={{ accessToken, isAuthenticated, authUser, myUser, loginWithRedirect, logout, refreshAuthVals }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ accessToken, isAuthenticated, authUser, myUser, loginWithRedirect, logout, refreshAuthVals }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 const useAuth = (): AuthContextType => useContext(AuthContext);
