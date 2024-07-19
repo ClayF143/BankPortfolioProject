@@ -1,17 +1,8 @@
 import User from "../types/User";
-import axios from "axios";
-import config from "../config";
-
-const baseControllerUrl = `${config.baseApiUrl}/user`;
+import ServiceFactory from "./ServiceFactory";
 
 const UserService = {
-    fetchCurrentUser: async (accessToken: string): Promise<User> => {
-        return (await axios.get(`${baseControllerUrl}/getcurrentuser`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        })).data;
-    }
+    fetchCurrentUser: ServiceFactory.fetchNoId<User>('user/getcurrentuser'),
 }
 
 export default UserService;
