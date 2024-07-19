@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';
 import Transaction from '../../types/Transaction';

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import AddTransactionPopup from "./AddTransactionPopup";
-import { Menu, Dropdown, Button, MenuProps } from 'antd';
+import { Dropdown, Button, MenuProps } from 'antd';
 import Account from "../../types/Account";
 import { useAuth } from "../../MyAuthProvider";
 import TransactionGrid from "./TransactionGrid";
@@ -18,7 +18,7 @@ function Transactions() {
   useEffect(() => {
     if(myUser) {
       setAccountOptions(myUser.accounts);
-      if(myUser.accounts.length == 1) {
+      if(myUser.accounts.length === 1) {
         setCurrAccount(myUser.accounts[0]);
       }
     } else {
@@ -36,7 +36,7 @@ function Transactions() {
   });
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    setCurrAccount(accountOptions.find(account => account.id == Number(e.key)));
+    setCurrAccount(accountOptions.find(account => account.id === Number(e.key)));
   }
   
   return (
