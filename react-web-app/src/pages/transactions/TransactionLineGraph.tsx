@@ -1,6 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import User from '../types/User'
-import { useAuth } from '../MyAuthProvider';
+import User from '../../types/User'
+import { useAuth } from '../../MyAuthProvider';
 
 // for each account, should only use the last transaction of each day
 const prepareData = (user: User) => {

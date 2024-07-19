@@ -6,7 +6,7 @@ import { Dropdown, Button, MenuProps } from 'antd';
 import Account from "../../types/Account";
 import { useAuth } from "../../MyAuthProvider";
 import TransactionGrid from "./TransactionGrid";
-import TransactionLineGraph from "../TransactionLineGraph";
+import TransactionLineGraph from "./TransactionLineGraph";
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 
 function Transactions() {

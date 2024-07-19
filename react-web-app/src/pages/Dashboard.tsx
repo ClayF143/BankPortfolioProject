@@ -1,5 +1,5 @@
 import { createElement, useState } from 'react';
-import { UserOutlined, DollarOutlined } from '@ant-design/icons';
+import { UserOutlined, DollarOutlined, InfoCircleOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from '../misc-components/Login';
 import Transactions from './transactions/Transactions';
@@ -21,17 +21,17 @@ const items2: MenuProps['items'] = [
   },
   {
     key: 'accounts',
-    icon: createElement(UserOutlined),
+    icon: createElement(FolderOpenOutlined),
     label: 'Accounts'
   },
   {
     key: 'users',
     icon: createElement(UserOutlined),
-    label: 'User List'
+    label: 'User Management'
   },
   {
     key: 'about',
-    icon: createElement(UserOutlined),
+    icon: createElement(InfoCircleOutlined),
     label: 'About'
   },
 ]
