@@ -31,7 +31,7 @@ function TransactionGrid({ transactions }: TransactionGripProps) {
   ];
 
   return (
-    <div className="ag-theme-alpine" style={{ height: 400, width: '95%', minWidth: 400 }}>
+    <div className="ag-theme-alpine" style={{ height: 400, minWidth: 400 }}>
       <AgGridReact
         columnDefs={columnDefs}
         rowData={transactions}

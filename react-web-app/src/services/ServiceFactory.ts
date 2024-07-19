@@ -52,7 +52,7 @@ const ServiceFactory = {
         }
       });
     };
-  } ,
+  },
 }
 
 export default ServiceFactory;

@@ -4,6 +4,7 @@ import { Layout, Menu, theme, MenuProps } from 'antd';
 import Login from '../misc-components/Login';
 import Transactions from './transactions/Transactions';
 import UserList from '../misc-components/UserList';
+import LineGraph from './TransactionLineGraph';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -28,11 +29,6 @@ const items2: MenuProps['items'] = [
     icon: createElement(UserOutlined),
     label: 'User List'
   },
-  {
-    key: 'linegraph',
-    icon: createElement(UserOutlined),
-    label: 'Line Graph'
-  }
 ]
 
 function Dashboard() {
@@ -79,9 +75,6 @@ function Dashboard() {
           )}
           {selectedMenuItem === 'users' && (
             <UserList />
-          )}
-          {selectedMenuItem === 'linegraph' && (
-            <></>
           )}
         </Content>
       </Layout>
